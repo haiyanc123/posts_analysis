@@ -2,9 +2,9 @@ from flask import Blueprint, jsonify, request
 from services import user_service
 from models.user import User
 
-users_bp = Blueprint('user', __name__)
+user_bp = Blueprint('user', __name__)
 
-@users_bp.route('/', methods=['GET'])
+@user_bp.route('/', methods=['GET'])
 def list_users():
     """
     Get all users
@@ -16,7 +16,7 @@ def list_users():
     users = user_service.get_all_users()
     return jsonify(users)
 
-@users_bp.route('/', methods=['POST'])
+@user_bp.route('/', methods=['POST'])
 def create_user():
     """
     Create a new user
@@ -55,7 +55,7 @@ def create_user():
     user_service.create_user(user)
     return jsonify({'message': 'User created'}), 201
 
-@users_bp.route('/detail', methods=['GET'])
+@user_bp.route('/detail', methods=['GET'])
 def list_or_find_user():
     """
     Get all users or find user by username and social_media
