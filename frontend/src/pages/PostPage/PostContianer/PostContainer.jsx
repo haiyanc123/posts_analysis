@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Col, Flex, Input, Radio, Row } from "antd";
+import { Button, Col, Flex, Input, Radio, Row } from "antd";
 
 import { postPageInputMappers } from "./helper.js";
 import CustomTemplates from "../../../components/customTemplates/CustomTemplates.jsx";
@@ -14,7 +14,7 @@ function PostContainer() {
     hasMultimedia: false,
     time: "",
     likesNum: "",
-    disLikeNum: "",
+    dislikeNum: "",
     city: "",
     state: "",
     country: "",
@@ -25,7 +25,8 @@ function PostContainer() {
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
+    console.log("name", name);
+    console.log("value", value);
     setPostData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -55,7 +56,7 @@ function PostContainer() {
       <div>
         <Row gutter={[24, 24]}>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Post Id:</label>
               <Input
                 value={postData.postId}
@@ -65,7 +66,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>User Name:</label>
               <Input
                 name="userName"
@@ -75,7 +76,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Social Media:</label>
               <Input
                 name="socialMedia"
@@ -85,7 +86,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Text:</label>
               <Input
                 name="text"
@@ -95,7 +96,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Has Multimedia:</label>
               <Radio.Group
                 name="hasMultimedia"
@@ -109,7 +110,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Time:</label>
               <Input
                 name="time"
@@ -119,37 +120,27 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Likes Number:</label>
               <Input
-                name="likeHum"
+                name="likesNum"
                 onChange={handleChangeInput}
                 value={postData.likesNum}
               />
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Dislike Number:</label>
               <Input
                 name="dislikeNum"
                 onChange={handleChangeInput}
-                value={postData.disLikeNum}
+                value={postData.dislikeNum}
               />
             </Flex>
           </Col>
           <Col>
-            <Flex>
-              <label>Dislike Number:</label>
-              <Input
-                name="dislikeNum"
-                onChange={handleChangeInput}
-                value={postData.disLikeNum}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex>
+            <Flex align="center">
               <label>City:</label>
               <Input
                 name="city"
@@ -159,7 +150,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>State:</label>
               <Input
                 name="state"
@@ -169,7 +160,7 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Country:</label>
               <Input
                 name="country"
@@ -179,16 +170,21 @@ function PostContainer() {
             </Flex>
           </Col>
           <Col>
-            <Flex>
+            <Flex align="center">
               <label>Project Name:</label>
               <Input
-                name="country"
+                name="projectName"
                 onChange={handleChangeInput}
                 value={postData.projectName}
               />
             </Flex>
           </Col>
         </Row>
+        <Flex justify="flex-end">
+          <Button color="cyan" variant="solid">
+            Confirm
+          </Button>
+        </Flex>
       </div>
     </>
   );

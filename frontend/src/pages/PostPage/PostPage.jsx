@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { Flex } from "antd";
+import React from "react";
 
 import "./PostPage.css";
 import PostContainer from "./PostContianer/PostContainer";
+import UploadFile from "./UploadFile/UploadFile";
+import QueryPost from "./QueryPost/QueryPost";
 
 function PostPage() {
   //Rendering UI element
@@ -12,6 +13,9 @@ function PostPage() {
       <hr></hr>
       <PostContainer />
       <hr></hr>
+      <UploadFile />
+      <hr></hr>
+      <QueryPost />
     </div>
   );
 }
