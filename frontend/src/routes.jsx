@@ -1,16 +1,16 @@
 import React from "react";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import BaseLayoutPage from "./pages/BaseLayoutPage/BaseLayoutPage.jsx";
 import PostPage from "./pages/PostPage/PostPage.jsx";
 
 const Routes = createBrowserRouter([
   {
-    path: "/",
+    path: "/post",
     element: <BaseLayoutPage />,
     children: [
       {
-        path: "/",
+        path: "/post",
         element: <PostPage />,
       },
     ],
