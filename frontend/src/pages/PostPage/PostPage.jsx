@@ -11,6 +11,7 @@ function PostPage() {
       <h2 className={`${PostPage.displayName}-heading`}>POST</h2>
       <hr></hr>
       <PostContainer />
+      <hr></hr>
     </div>
   );
 }
