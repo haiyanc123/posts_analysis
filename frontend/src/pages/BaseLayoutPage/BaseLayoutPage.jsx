@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Layout } from "antd";
-import { Outlet } from "react-router";
-
+import { Button, Flex, Layout } from "antd";
+import { NavLink, Outlet } from "react-router";
 //Layout CSS
 const headerStyle = {
   backgroundColor: "#72cacc",
@@ -19,7 +18,29 @@ const contentStyle = {
   backgroundColor: "white",
 };
 
-function App() {
+const menuLinks = [
+  {
+    label: "Post",
+    nav: "/post",
+  },
+  {
+    label: "Project",
+    nav: "/project",
+  },
+];
+
+function SideMenuNav() {
+  const navLinks = menuLinks.map((item) => (
+    <Flex align="center" justify="space-around">
+      <Button type="text" size="large">
+        <NavLink to={item.nav}>{item.label}</NavLink>
+      </Button>
+    </Flex>
+  ));
+  return navLinks;
+}
+
+function BaseLayoutPage() {
   const { Header, Sider, Content } = Layout;
   return (
     <Layout>
@@ -28,9 +49,7 @@ function App() {
       </Header>
       <Layout>
         <Sider style={siderStyle}>
-          <p>Post</p>
-          <p>Repost</p>
-          <p>User</p>
+          <SideMenuNav />
         </Sider>
         <Content style={contentStyle}>
           <Outlet />
@@ -40,4 +59,4 @@ function App() {
   );
 }
 
-export default App;
+export default BaseLayoutPage;

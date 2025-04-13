@@ -4,6 +4,7 @@ import "./PostPage.css";
 import PostContainer from "./PostContianer/PostContainer";
 import UploadFile from "./UploadFile/UploadFile";
 import QueryPost from "./QueryPost/QueryPost";
+import PostTable from "./PostTable/PostTable";
 
 function PostPage() {
   //Rendering UI element
@@ -16,6 +17,8 @@ function PostPage() {
       <UploadFile />
       <hr></hr>
       <QueryPost />
+      <hr></hr>
+      <PostTable />
     </div>
   );
 }

@@ -6,12 +6,16 @@ import PostPage from "./pages/PostPage/PostPage.jsx";
 
 const Routes = createBrowserRouter([
   {
-    path: "/post",
+    path: "/",
     element: <BaseLayoutPage />,
     children: [
       {
         path: "/post",
         element: <PostPage />,
+      },
+      {
+        path: "/project",
+        element: <h1>Temp Project Page</h1>,
       },
     ],
   },

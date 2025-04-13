@@ -1,5 +1,6 @@
 from flask import Flask
 from flasgger import Swagger
+from flask_cors import CORS
 
 from api.user_api import user_bp
 from api.post_api import post_bp
@@ -7,6 +8,7 @@ from api.project_api import project_bp
 from api.result_api import result_bp
 
 app = Flask(__name__)
+CORS(app)
 swagger = Swagger(app=app)
 
 # Register blueprints
