@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 
 import BaseLayoutPage from "./pages/BaseLayoutPage/BaseLayoutPage.jsx";
 import PostPage from "./pages/PostPage/PostPage.jsx";
+import ProjectPage from "./pages/ProjectPage/ProjectPage.jsx";
 
 const Routes = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/project",
-        element: <h1>Temp Project Page</h1>,
+        element: <ProjectPage />,
       },
     ],
   },
