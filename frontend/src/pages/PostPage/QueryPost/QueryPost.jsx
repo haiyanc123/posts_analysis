@@ -6,7 +6,8 @@ function QueryPost() {
   const [queryData, setQueryData] = useState({
     socialMedia: "",
     userName: "",
-    posterName: "",
+    posterFirstName: "",
+    posterLastName: "",
     fromDate: "",
     toDate: "",
   });
@@ -61,11 +62,21 @@ function QueryPost() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Poster Name:</label>
+              <label>Poster First Name:</label>
               <Input
-                name="posterName"
+                name="posterFirstName"
                 onChange={handleChangeInput}
-                value={queryData.posterName}
+                value={queryData.posterFirstName}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>Poster Last Name:</label>
+              <Input
+                name="posterLastName"
+                onChange={handleChangeInput}
+                value={queryData.posterLastName}
               />
             </Flex>
           </Col>
