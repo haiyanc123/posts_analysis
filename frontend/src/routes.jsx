@@ -11,6 +11,10 @@ const Routes = createBrowserRouter([
     element: <BaseLayoutPage />,
     children: [
       {
+        index: true,
+        element: <Navigate to="/post" replace />,
+      },
+      {
         path: "/post",
         element: <PostPage />,
       },
