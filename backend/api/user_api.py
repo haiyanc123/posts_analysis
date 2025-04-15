@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from services import user_service
-from models.user import User
+from schemas.user_schema import  CreateUserSchema
+from utils.response_util import success_response, error_response
+
 
 user_bp = Blueprint('user', __name__)
 
@@ -14,7 +16,7 @@ def list_users():
         description: A list of users
     """
     users = user_service.get_all_users()
-    return jsonify(users)
+    return success_response(data=users)
 
 @user_bp.route('/', methods=['POST'])
 def create_user():
@@ -50,13 +52,12 @@ def create_user():
       201:
         description: User created
     """
-    data = request.json
-    user = User(**data)
-    user_service.create_user(user)
-    return jsonify({'message': 'User created'}), 201
+    data = CreateUserSchema().load(request.json)
+    user_service.create_user(data)
+    return success_response()
 
 @user_bp.route('/detail', methods=['GET'])
-def list_or_find_user():
+def find_one():
     """
     Get all users or find user by username and social_media
     ---
@@ -77,10 +78,10 @@ def list_or_find_user():
     """
     username = request.args.get('username')
     social_media = request.args.get('social_media')
-
-    if username and social_media:
-        user = user_service.find_user_by_pk(username, social_media)
-        if user:
-            return jsonify(user.__dict__)
-        else:
-            return jsonify({'message': 'User not found'}), 404
+    if not username or not social_media:
+        return error_response(message="username and social_media must exists")
+    user = user_service.find_user_by_pk(username, social_media)
+    if user:
+        return success_response(data=user)
+    else:
+        return error_response(message='User not found')
