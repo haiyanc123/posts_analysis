@@ -1,5 +1,9 @@
 from flask import Blueprint, jsonify, request
 
+from schemas.result_schema import ResultCreateSchema
+from services import result_service
+from utils.response_util import success_response
+from utils.serialize_util import serialize
 
 result_bp = Blueprint('result', __name__)
 @result_bp.route('/', methods=['POST'])
@@ -16,13 +20,58 @@ def create_result():
           properties:
             proj_name:
               type: string
-            posts_results:
+            post_username:
+              type: string
+            post_social_media:
+              type: string
+            post_time:
+              type: string
+            field_name:
+              type: string
+            field_value:
               type: string
     responses:
       201:
         description: post created
     """
-    data = request.json
-    # user = User(**data)
-    # user_service.create_user(user)
-    return jsonify({'message': 'results created'}), 201
+    data=ResultCreateSchema().load(request.json)
+    result_service.create_result(data)
+    return success_response()
+
+@result_bp.route('/', methods=['GET'])
+def qry_list():
+    """
+    Find posts of a certain social media
+    ---
+    parameters:
+      - name: proj_name
+        in: query
+        type: string
+        required: false
+      - name: post_username
+        in: query
+        type: string
+        required: false
+      - name: post_social_media
+        in: query
+        type: string
+        required: false
+      - name: post_time
+        in: query
+        type: string
+        required: false
+      - name: field_name
+        in: query
+        type: string
+        required: false
+    responses:
+      200:
+        description: A list of analysis results
+    """
+    proj_name = request.args.get('proj_name')
+    field_name = request.args.get('field_name')
+    post_username = request.args.get('post_username')
+    post_social_media = request.args.get('post_social_media')
+    post_time = request.args.get('post_time')
+    res=result_service.qry_results(proj_name,post_username,post_social_media,post_time,field_name)
+    return success_response(data=serialize(res))
