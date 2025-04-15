@@ -7,7 +7,6 @@ import CustomTemplates from "../../../components/customTemplates/CustomTemplates
 function PostContainer() {
   //Creating State Data
   const [postData, setPostData] = useState({
-    postId: "",
     userName: "",
     socialMedia: "",
     text: "",
@@ -32,15 +31,11 @@ function PostContainer() {
     }));
   };
 
-  //Mapping handleChangeInput function to mapper variable. Might not need this
-  const postInputMappers = postPageInputMappers.map((item) => {
-    const getValue = postData[item.name];
-    return {
-      ...item,
-      onChange: handleChangeInput,
-      value: getValue,
-    };
-  });
+  const handleDisabledButton = () => {
+    const { userName, socialMedia, time } = postData;
+
+    return userName && socialMedia && time;
+  };
 
   //Rendering UI element
   return (
@@ -56,27 +51,28 @@ function PostContainer() {
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>Post Id:</label>
-              <Input
-                value={postData.postId}
-                onChange={handleChangeInput}
-                name="postId"
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>User Name:</label>
+              <label>
+                User Name:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="userName"
                 onChange={handleChangeInput}
                 value={postData.userName}
+                required
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
-              <label>Social Media:</label>
+              <label>
+                Social Media:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="socialMedia"
                 onChange={handleChangeInput}
@@ -110,7 +106,12 @@ function PostContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Time:</label>
+              <label>
+                Time:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="time"
                 onChange={handleChangeInput}
@@ -180,7 +181,11 @@ function PostContainer() {
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button color="cyan" variant="solid">
+          <Button
+            color="cyan"
+            variant="solid"
+            disabled={!handleDisabledButton()}
+          >
             Confirm
           </Button>
         </Flex>

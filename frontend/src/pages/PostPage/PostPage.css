@@ -13,3 +13,7 @@
 .post-container-content-div {
   display: inline-block;
 }
+
+.post-container-required-star {
+  color: red;
+}
