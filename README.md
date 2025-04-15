@@ -4,9 +4,7 @@ Language: Python 3+, Javascript
 Framework: Flask, React
 Database: MYSQL 5.7+(via mysql-connector-python)
 
-# how to start program:
-
-python app.py or click run button inside app.py
+# Front-End
 
 ## Prerequisites for running frontend
 
@@ -30,21 +28,26 @@ Installed the latest version of nodeJs from this link: https://nodejs.org/en
    ```
    http://localhost:5173
    ```
+# Back-End
+## how to start program:
 
-# API docs:
+python app.py or click run button inside app.py
+
+## API docs:
 
 after program starts, visit the following link:
 http://127.0.0.1:5000/apidocs
 
-# Dependencies
+## Dependencies
 
-including flask, mysql-connector-python, flasgger, command as follows:
+flask, mysql-connector-python, flasgger, flask_cors
 
-pip install flask mysql-connector-python flasgger
+command as follows:
+pip install xxxx
 
 Note: flasgger is used to add swagger so that api doc can be generated automically
 
-# code structure(multiple packages)
+## code structure(multiple packages)
 
 - models/: define entities for each table in the database. E.g. we have user, post, project. etc.
 - dao/: handles database CRUD operation (raw SQL)
@@ -52,6 +55,23 @@ Note: flasgger is used to add swagger so that api doc can be generated automical
 - api/: interface, exposed its api in RESTful APIs styles. The implementation of each function inside involves calling function from services/
 - utils/: some common util, such as datetime util, convert row into object, etc.
 
-# configurage
+## configuration
 
 all configuration can be placed inside config.py, such as database configuration, swagger config, etc.
+
+## Others:
+we unified the API response examples as follows:
+- On success:
+{
+  "success": true,
+  "message": "xxxx",
+  "data": {
+    "username": "Jack"
+  }
+}
+- On error:
+{
+  "success": false,
+  "error": "xxxx",
+  "code": "xxxx"
+}
