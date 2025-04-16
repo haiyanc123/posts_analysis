@@ -1,9 +1,6 @@
 import { useState, useCallback } from "react";
 import { Button, Col, Flex, Input, Radio, Row } from "antd";
 
-import { postPageInputMappers } from "./helper.js";
-import CustomTemplates from "../../../components/customTemplates/CustomTemplates.jsx";
-
 function PostContainer() {
   //Creating State Data
   const [postData, setPostData] = useState({
