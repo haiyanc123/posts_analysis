@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Button, Col, DatePicker, Flex, Input, Radio, Row } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Col, DatePicker, Flex, Input, Row } from "antd";
+
+import PostTable from "../PostTable/PostTable";
+import { createQueryUrl } from "./helper";
 
 function QueryPost() {
   //Creating State Data
@@ -11,6 +14,8 @@ function QueryPost() {
     fromDate: "",
     toDate: "",
   });
+
+  const [data, setData] = useState(null);
 
   //Handing Input Changes
   const handleChangeInput = (e) => {
@@ -30,12 +35,30 @@ function QueryPost() {
     }));
   };
 
+  const handleSubmitButton = () => {
+    const url = createQueryUrl(queryData);
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        setData(resp.data);
+      });
+  };
+
+  useEffect(() => {
+    handleSubmitButton();
+  }, []);
+
   //Rendering UI element
   return (
     <>
       <div>
         <p>
-          <b className={`${QueryPost.displayName}-heading-para`}>Enter Post</b>
+          <b className={`${QueryPost.displayName}-heading-para`}>Query Post</b>
         </p>
       </div>
       <div>
@@ -86,7 +109,6 @@ function QueryPost() {
               <DatePicker
                 name="fromDate"
                 onChange={(date, value) => handleChangeData("fromDate", value)}
-                value={queryData.fromData}
               />
             </Flex>
           </Col>
@@ -96,17 +118,18 @@ function QueryPost() {
               <DatePicker
                 name="toDate"
                 onChange={(date, value) => handleChangeData("toDate", value)}
-                value={queryData.toDate}
               />
             </Flex>
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button color="cyan" variant="solid">
+          <Button color="cyan" variant="solid" onClick={handleSubmitButton}>
             Confirm
           </Button>
         </Flex>
       </div>
+      <hr></hr>
+      <PostTable data={data} />
     </>
   );
 }

@@ -1,13 +1,26 @@
-import { useState, useCallback } from "react";
-import { Button, Col, Flex, Input, Radio, Row } from "antd";
+import { useState, useCallback, useEffect } from "react";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Flex,
+  Input,
+  notification,
+  Radio,
+  Row,
+  TimePicker,
+} from "antd";
 
 function PostContainer() {
+  const [api, contextHolder] = notification.useNotification();
+
   //Creating State Data
   const [postData, setPostData] = useState({
     userName: "",
     socialMedia: "",
     text: "",
-    hasMultimedia: false,
+    hasMultimedia: null,
+    date: "",
     time: "",
     likesNum: "",
     dislikeNum: "",
@@ -34,9 +47,43 @@ function PostContainer() {
     return userName && socialMedia && time;
   };
 
+  const handleSubmitButton = () => {
+    let payload = {
+      post_username: postData.userName,
+      post_social_media: postData.socialMedia,
+      post_time: `${postData.date} ${postData.time}`,
+      text: postData.text,
+      has_multimedia: postData.hasMultimedia ? postData.hasMultimedia : 0,
+      likes_num: postData.likesNum ? Number(postData.likesNum) : 0,
+      dislike_num: postData.dislikeNum ? Number(postData.dislikeNum) : 0,
+      city: postData.city,
+      state: postData.state,
+      country: postData.country,
+    };
+
+    fetch("http://127.0.0.1:5000/post/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then((resp) => {
+      if (resp.ok) {
+        api.success({
+          message: "Successfully Added Post To Database",
+        });
+      } else {
+        api.error({
+          message: "There was an error",
+        });
+      }
+    });
+  };
+
   //Rendering UI element
   return (
     <>
+      {contextHolder}
       <div>
         <p>
           <b className={`${PostContainer.displayName}-heading-para`}>
@@ -95,9 +142,29 @@ function PostContainer() {
                 onChange={handleChangeInput}
                 value={postData.hasMultimedia}
                 options={[
-                  { label: "Yes", value: "yes" },
-                  { label: "No", value: "no" },
+                  { label: "Yes", value: 1 },
+                  { label: "No", value: 0 },
                 ]}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Date:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
+              <DatePicker
+                name="date"
+                onChange={(e, dateString) => {
+                  setPostData((prevState) => ({
+                    ...prevState,
+                    date: dateString,
+                  }));
+                }}
+                // value={postData.date ? dayjs(postData.date) : ""}
               />
             </Flex>
           </Col>
@@ -109,10 +176,15 @@ function PostContainer() {
                   *
                 </span>
               </label>
-              <Input
+              <TimePicker
                 name="time"
-                onChange={handleChangeInput}
-                value={postData.time}
+                onChange={(e, timeString) => {
+                  setPostData((prevState) => ({
+                    ...prevState,
+                    time: timeString,
+                  }));
+                }}
+                // value={postData.time ? dayjs(postData.time) : ""}
               />
             </Flex>
           </Col>
@@ -182,6 +254,7 @@ function PostContainer() {
             color="cyan"
             variant="solid"
             disabled={!handleDisabledButton()}
+            onClick={handleSubmitButton}
           >
             Confirm
           </Button>

@@ -31,7 +31,7 @@ const menuLinks = [
 
 function SideMenuNav() {
   const navLinks = menuLinks.map((item) => (
-    <Flex align="center" justify="space-around">
+    <Flex align="center" justify="space-around" key={item.label}>
       <Button type="text" size="large">
         <NavLink to={item.nav}>{item.label}</NavLink>
       </Button>

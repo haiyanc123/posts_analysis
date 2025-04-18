@@ -14,8 +14,6 @@ function PostPage() {
       <PostContainer />
       <hr></hr>
       <QueryPost />
-      <hr></hr>
-      <PostTable />
     </div>
   );
 }
