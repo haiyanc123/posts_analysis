@@ -15,6 +15,10 @@ def find_by_pk(proj_name):
     return map_row_to_object(Project, row)
 
 def create_project(data):
+    start_date=data['start_date']
+    end_date=data['end_date']
+    if end_date < start_date:
+        raise BusinessException("end date has to be at least the same as the start time")
     try:
         flag=project_dao.insert_project(data)
     except IntegrityError as e:
