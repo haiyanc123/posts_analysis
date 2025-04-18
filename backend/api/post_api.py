@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from flask import Blueprint, jsonify, request
 from models.post import Post
 from services import post_service
 from schemas.post_schema import PostCreateSchema,PostQuerySchema
+from utils.custom_exceptions import BusinessException
 from utils.response_util import success_response, error_response
 from utils.serialize_util import serialize
 
@@ -110,10 +113,25 @@ def qry_list():
     """
     post_username = request.args.get('post_username')
     post_social_media = request.args.get('post_social_media')
-    start_time = request.args.get('start_time')
-    end_time = request.args.get('end_time')
+    start_time_str = request.args.get('start_time')
+    end_time_str = request.args.get('end_time')
     first_name = request.args.get('first_name')
     last_name = request.args.get('last_name')
+    try:
+        start_time = (
+            datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S") if start_time_str else None
+        )
+    except ValueError:
+        raise BusinessException("start_time format is not allowed")
+    try:
+        end_time = (
+            datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S") if end_time_str else None
+        )
+    except ValueError:
+        raise BusinessException("end_time format is not allowed")
+    if start_time and end_time and start_time > end_time:
+        raise BusinessException("end_time must be after start_time")
+
     posts=post_service.qry_posts(post_username,post_social_media,start_time,end_time,first_name,last_name)
     return success_response(data=serialize(posts))
 

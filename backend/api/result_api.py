@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from schemas.result_schema import ResultCreateSchema
 from services import result_service
+from utils.custom_exceptions import BusinessException
 from utils.response_util import success_response
 from utils.serialize_util import serialize
 
@@ -47,28 +48,14 @@ def qry_list():
       - name: proj_name
         in: query
         type: string
-        required: false
-      - name: post_username
-        in: query
-        type: string
-        required: false
-      - name: post_social_media
-        in: query
-        type: string
-        required: false
-      - name: post_time
-        in: query
-        type: string
-        required: false
-      - name: field_name
-        in: query
-        type: string
-        required: false
+        required: true
     responses:
       200:
         description: A list of analysis results
     """
     proj_name = request.args.get('proj_name')
+    if not proj_name:
+        raise BusinessException("project_name must not be null")
     field_name = request.args.get('field_name')
     post_username = request.args.get('post_username')
     post_social_media = request.args.get('post_social_media')
