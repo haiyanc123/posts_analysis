@@ -27,6 +27,10 @@ const menuLinks = [
     label: "Project",
     nav: "/project",
   },
+  {
+    label: "User",
+    nav: "/user",
+  },
 ];
 
 function SideMenuNav() {

@@ -1,0 +1,19 @@
+.user-page-main-div {
+  margin-left: 5px;
+}
+
+.user-container-heading {
+  margin-left: 25px;
+}
+
+.user-container-heading-para {
+  font-size: 20px;
+}
+
+.user-container-content-div {
+  display: inline-block;
+}
+
+.user-container-required-star {
+  color: red;
+}

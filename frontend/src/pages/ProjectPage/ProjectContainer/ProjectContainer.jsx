@@ -1,10 +1,9 @@
-import { useState, useCallback } from "react";
-import { Button, Col, Flex, Input, Radio, Row } from "antd";
-
-import CustomTemplates from "../../../components/customTemplates/CustomTemplates.jsx";
+import { useState } from "react";
+import { Button, Col, Flex, Input, notification, Row } from "antd";
 
 function ProjectContainer() {
   //Creating State Data
+  const [api, contextHolder] = notification.useNotification();
   const [projectData, setProjectData] = useState({
     projectName: "",
     manager: "",
@@ -17,9 +16,6 @@ function ProjectContainer() {
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log("e", e)
-    console.log("name", name)
-    console.log("value", value)
 
     setProjectData((prevState) => ({
       ...prevState,
@@ -27,10 +23,38 @@ function ProjectContainer() {
     }));
   };
 
+  const handleSubmitData = () => {
+    let payload = {
+      proj_name: projectData.projectName,
+      institute: projectData.manager,
+      manager: projectData.institute,
+      start_date: projectData.end_date,
+      end_date: projectData.start_date,
+    };
+
+    fetch("http://127.0.0.1:5000/project/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then((resp) => {
+      if (resp.ok) {
+        api.success({
+          message: "Successfully Added Post To Database",
+        });
+      } else {
+        api.error({
+          message: "There was an error",
+        });
+      }
+    });
+  };
 
   //Rendering UI element
   return (
     <>
+      {contextHolder}
       <div>
         <p>
           <b className={`${ProjectContainer.displayName}-heading-para`}>
@@ -82,7 +106,7 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>manager:</label>
+              <label>Manager:</label>
               <Input
                 name="manager"
                 onChange={handleChangeInput}
@@ -92,7 +116,7 @@ function ProjectContainer() {
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button color="cyan" variant="solid">
+          <Button color="cyan" variant="solid" onClick={handleSubmitData}>
             Confirm
           </Button>
         </Flex>
