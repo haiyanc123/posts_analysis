@@ -80,6 +80,7 @@ def group_result_rows(rows, field_coverage):
                 "post_username": row["post_username"],
                 "post_socialmedia": row["post_social_media"],
                 "post_time": formatted_time,
+                "text": row["text"],
                 "fileds": []
             }
             proj[post_key] = post_obj
@@ -101,6 +102,8 @@ def cal_field_coverage(rows):
         percentage = round(row["count"] * 100.0 / row["total"], 2) if row["total"] else 0.0
         result.append({
             "field_name": row["field_name"],
-            "coverage": percentage
+            "coverage": percentage,
+            "count":row["count"],
+            "total":row["total"]
         })
     return result
