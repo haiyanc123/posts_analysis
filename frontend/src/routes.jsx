@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import BaseLayoutPage from "./pages/BaseLayoutPage/BaseLayoutPage.jsx";
 import PostPage from "./pages/PostPage/PostPage.jsx";
 import ProjectPage from "./pages/ProjectPage/ProjectPage.jsx";
+import UserPage from "./pages/UsersPage/UserPage.jsx";
 
 const Routes = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const Routes = createBrowserRouter([
       {
         path: "/project",
         element: <ProjectPage />,
+      },
+      {
+        path: "/user",
+        element: <UserPage />,
       },
     ],
   },

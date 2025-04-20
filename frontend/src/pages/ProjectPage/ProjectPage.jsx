@@ -3,7 +3,6 @@ import React from "react";
 import ProjectContainer from "./ProjectContainer/ProjectContainer";
 import ResultContainer from "./ResultContianer/ResultContainer";
 import QueryProject from "./QueryProject/QueryProject";
-import ProjectTable from "./ProjectTable/ProjectTable";
 import "./ProjectPage.css";
 
 function ProjectPage() {
@@ -16,8 +15,6 @@ function ProjectPage() {
       <ResultContainer />
       <hr></hr>
       <QueryProject />
-      <hr></hr>
-      <ProjectTable />
     </div>
   );
 }
