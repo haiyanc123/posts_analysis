@@ -35,9 +35,12 @@ def create_result(data):
             raise BusinessException()
     return flag
 
-def qry_results(proj_name, post_username,post_social_media,post_time,field_name):
-    rows = result_dao.qry_results(proj_name, post_username,post_social_media,post_time,field_name)
-    res=group_result_rows(rows)
+def qry_results(proj_name):
+    rows = result_dao.qry_results(proj_name)
+
+    coverage_rows=result_dao.qry_coverage(proj_name)
+    field_coverage = cal_field_coverage(coverage_rows)
+    res=group_result_rows(rows,field_coverage)
     return res
 
 
@@ -49,7 +52,7 @@ def find_one(proj_name,post_username,post_social_media,post_time,field_name):
 
 
 
-def group_result_rows(rows):
+def group_result_rows(rows, field_coverage):
     result = []
     proj_map = {}
 
@@ -61,7 +64,8 @@ def group_result_rows(rows):
             proj_map[proj_name] = {}
             result.append({
                 "proj_name": proj_name,
-                "posts": []
+                "posts": [],
+                "coverage":field_coverage
             })
 
         proj = proj_map[proj_name]
@@ -76,6 +80,7 @@ def group_result_rows(rows):
                 "post_username": row["post_username"],
                 "post_socialmedia": row["post_social_media"],
                 "post_time": formatted_time,
+                "text": row["text"],
                 "fileds": []
             }
             proj[post_key] = post_obj
@@ -89,4 +94,16 @@ def group_result_rows(rows):
             "field_value": row["field_value"]
         })
 
+    return result
+
+def cal_field_coverage(rows):
+    result = []
+    for row in rows:
+        percentage = round(row["count"] * 100.0 / row["total"], 2) if row["total"] else 0.0
+        result.append({
+            "field_name": row["field_name"],
+            "coverage": percentage,
+            "count":row["count"],
+            "total":row["total"]
+        })
     return result
