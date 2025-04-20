@@ -8,7 +8,9 @@ function UserPage() {
     <div className={`${UserPage.displayName}-main-div`}>
       <h2 className={`${UserPage.displayName}-heading`}>User</h2>
       <hr></hr>
-      <UserContainer />
+      <UserContainer mode="enter" />
+      <hr></hr>
+      <UserContainer mode="query" />
     </div>
   );
 }

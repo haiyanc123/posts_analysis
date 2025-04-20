@@ -5,12 +5,17 @@ import {
   Flex,
   Input,
   InputNumber,
+  notification,
   Radio,
   Row,
   Select,
 } from "antd";
+import PropTypes from "prop-types";
+import UserTable from "../UserTable/UserTable";
 
-function UserContainer() {
+function UserContainer({ mode }) {
+  const [api, contextHolder] = notification.useNotification();
+
   const [userData, setUserData] = useState({
     userName: "",
     socialMedia: "",
@@ -23,6 +28,7 @@ function UserContainer() {
     gender: null,
   });
 
+  const [queryUserData, setQueryUserData] = useState(null);
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -46,18 +52,66 @@ function UserContainer() {
       gender: value,
     }));
   };
+
   const handleDisableButton = () => {
     const { userName, socialMedia } = userData;
 
     return userName && socialMedia;
   };
 
+  const handleEnterUserData = () => {
+    const payload = {
+      age: userData.age,
+      birth_country: userData.birthCountry,
+      first_name: userData.firstName,
+      gender: userData.gender,
+      is_verified: userData.isVerified,
+      last_name: userData.lastName,
+      residence_country: userData.residencyCountry,
+      social_media: userData.socialMedia,
+      username: userData.userName,
+    };
+
+    fetch("http://127.0.0.1:5000/user/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then((resp) => {
+      if (resp.ok) {
+        api.success({
+          message: "Successfully Added Post To Database",
+        });
+      } else {
+        api.error({
+          message: "There was an error",
+        });
+      }
+    });
+  };
+
+  const handleQueryUserData = () => {
+    fetch(
+      `http://127.0.0.1:5000/user/detail?username=${userData.userName}&social_media=${userData.socialMedia}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }
+    )
+      .then((resp) => resp.json())
+      .then((resp) => setQueryUserData([resp.data]));
+  };
+
   return (
     <>
+      {mode === "enter" ? contextHolder : null}
       <div>
         <p>
           <b className={`${UserContainer.displayName}-heading-para`}>
-            Enter User Information
+            {mode === "enter" ? "Enter User Information" : "Query User"}
           </b>
         </p>
       </div>
@@ -67,9 +121,13 @@ function UserContainer() {
             <Flex align="center">
               <label>
                 User Name:
-                <span className={`${UserContainer.displayName}-required-star`}>
-                  *
-                </span>
+                {mode === "enter" ? (
+                  <span
+                    className={`${UserContainer.displayName}-required-star`}
+                  >
+                    *
+                  </span>
+                ) : null}
               </label>
               <Input
                 value={userData.userName}
@@ -82,9 +140,13 @@ function UserContainer() {
             <Flex align="center">
               <label>
                 Social Media:
-                <span className={`${UserContainer.displayName}-required-star`}>
-                  *
-                </span>
+                {mode === "enter" ? (
+                  <span
+                    className={`${UserContainer.displayName}-required-star`}
+                  >
+                    *
+                  </span>
+                ) : null}
               </label>
               <Input
                 name="socialMedia"
@@ -193,17 +255,33 @@ function UserContainer() {
           <Button
             color="cyan"
             variant="solid"
-            disabled={!handleDisableButton()}
-            // onClick={handleSubmitData}
+            disabled={mode === "enter" ? !handleDisableButton() : false}
+            onClick={
+              mode === "enter" ? handleEnterUserData : handleQueryUserData
+            }
           >
             Confirm
           </Button>
         </Flex>
+        {mode === "query" ? (
+          <>
+            <hr></hr>
+            <UserTable data={queryUserData} />
+          </>
+        ) : null}
       </div>
     </>
   );
 }
 
 UserContainer.displayName = "user-container";
+
+UserContainer.prototype = {
+  mode: PropTypes.string,
+};
+
+UserContainer.defaultProps = {
+  mode: "enter",
+};
 
 export default UserContainer;

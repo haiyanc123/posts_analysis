@@ -5,10 +5,11 @@ import ProjectTable from "../ProjectTable/ProjectTable";
 
 function QueryProject() {
   const [projectName, setProjectName] = useState("");
-  const [data, setData] = useState(null);
+  const [postData, setPostData] = useState(null);
+  const [percentageData, setPercentageData] = useState(null);
 
   const handleSubmitButton = () => {
-    const url = `http://127.0.0.1:5000/project/?proj_name=${projectName}`;
+    const url = `http://127.0.0.1:5000/result/?proj_name=${projectName}`;
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +18,8 @@ function QueryProject() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        setData(resp.data);
+        setPostData(resp.data[0].posts);
+        setPercentageData(resp.data[0].coverage);
       });
   };
 
@@ -56,7 +58,7 @@ function QueryProject() {
         </Flex>
       </div>
       <hr></hr>
-      <ProjectTable data={data} />
+      <ProjectTable postData={postData} percentageData={percentageData} />
     </>
   );
 }

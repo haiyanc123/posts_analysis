@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Flex, Input, notification, Row } from "antd";
+import { Button, Col, DatePicker, Flex, Input, notification, Row } from "antd";
 
 function ProjectContainer() {
   //Creating State Data
@@ -51,6 +51,13 @@ function ProjectContainer() {
     });
   };
 
+  const handleDisabled = () => {
+    const { projectName, manager, institute, end_date, start_date } =
+      projectData;
+
+    return projectName && manager && institute && end_date && start_date;
+  };
+
   //Rendering UI element
   return (
     <>
@@ -87,20 +94,28 @@ function ProjectContainer() {
           <Col>
             <Flex align="center">
               <label>Start Date:</label>
-              <Input
+              <DatePicker
                 name="start_date"
-                onChange={handleChangeInput}
-                value={projectData.start_date}
+                onChange={(e, dateString) => {
+                  setProjectData((prevState) => ({
+                    ...prevState,
+                    start_date: dateString,
+                  }));
+                }}
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
               <label>End Date:</label>
-              <Input
+              <DatePicker
                 name="end_date"
-                onChange={handleChangeInput}
-                value={projectData.end_date}
+                onChange={(e, dateString) => {
+                  setProjectData((prevState) => ({
+                    ...prevState,
+                    end_date: dateString,
+                  }));
+                }}
               />
             </Flex>
           </Col>
@@ -116,7 +131,12 @@ function ProjectContainer() {
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button color="cyan" variant="solid" onClick={handleSubmitData}>
+          <Button
+            color="cyan"
+            variant="solid"
+            onClick={handleSubmitData}
+            disabled={!handleDisabled()}
+          >
             Confirm
           </Button>
         </Flex>
