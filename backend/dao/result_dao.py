@@ -20,25 +20,29 @@ def insert_result(data):
 def get_by_pk(proj_name, post_username, post_social_media,post_time,field_name):
     return execute_query("select * from result where proj_name=%s and post_username=%s and post_social_media=%s and post_time=%s and field_name=%s ", (proj_name,post_username, post_social_media,post_time,field_name), fetchone=True)
 
-def qry_results(proj_name,post_username, post_social_media,post_time,field_name):
+def qry_results(proj_name):
     query="""
-    select * from result where 1=1
+    select  r.*, p.text
+    from result r
+    join post p 
+      on r.post_username = p.post_username
+      and r.post_social_media = p.post_social_media
+      and r.post_time = p.post_time
+      where r.proj_name = %s
     """
-    params=[]
-    if proj_name:
-        query += " AND proj_name = %s"
-        params.append(proj_name)
-    if post_username:
-        query += " AND post_username = %s"
-        params.append(post_username)
-    if post_social_media:
-        query += " AND post_social_media = %s"
-        params.append(post_social_media)
-    if post_time:
-        query += " AND post_time = %s"
-        params.append(post_username)
-    if field_name:
-        query += " AND field_name = %s"
-        params.append(field_name)
-    return execute_query(query,params,fetchall=True)
+    return execute_query(query,(proj_name,),fetchall=True)
+
+def qry_coverage(proj_name):
+    query="""
+    select  
+    r.field_name,
+    COUNT(DISTINCT CONCAT(r.post_username, '|', r.post_social_media, '|', r.post_time)) count,
+    (SELECT COUNT(DISTINCT CONCAT(post_username, '|', post_social_media, '|', post_time)) 
+       FROM result r2 WHERE r2.proj_name = %s) total
+    from result r
+    where r.proj_name =%s
+    group by r.field_name;
+    """
+    return execute_query(query, (proj_name,proj_name), fetchall=True)
+
 

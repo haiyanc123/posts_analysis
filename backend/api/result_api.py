@@ -56,9 +56,5 @@ def qry_list():
     proj_name = request.args.get('proj_name')
     if not proj_name:
         raise BusinessException("project_name must not be null")
-    field_name = request.args.get('field_name')
-    post_username = request.args.get('post_username')
-    post_social_media = request.args.get('post_social_media')
-    post_time = request.args.get('post_time')
-    res=result_service.qry_results(proj_name,post_username,post_social_media,post_time,field_name)
+    res=result_service.qry_results(proj_name)
     return success_response(data=serialize(res))
