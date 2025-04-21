@@ -102,6 +102,7 @@ def cal_field_coverage(rows):
         percentage = round(row["count"] * 100.0 / row["total"], 2) if row["total"] else 0.0
         result.append({
             "field_name": row["field_name"],
+            "field_value": row["field_value"],
             "coverage": percentage,
             "count":row["count"],
             "total":row["total"]
