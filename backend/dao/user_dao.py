@@ -2,8 +2,18 @@ from dao.db_helper import execute_query
 from models.user import User
 
 
-def get_all_users():
-    return execute_query("SELECT * FROM user", fetchall=True)
+def get_all_users(username, social_media):
+    query="""
+    SELECT * FROM user where 1=1
+    """
+    params=[]
+    if username:
+        query += " AND username = %s"
+        params.append(username)
+    if social_media:
+        query += " AND social_media = %s"
+        params.append(social_media)
+    return execute_query(query,params, fetchall=True)
 
 def get_user_by_pk(username,social_media):
     return execute_query("SELECT * FROM user WHERE username = %s and social_media= %s", (username,social_media), fetchone=True)

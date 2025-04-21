@@ -16,8 +16,8 @@ def create_user(data):
     return flag
 
 
-def get_all_users():
-    rows = user_dao.get_all_users()
+def get_all_users(username, social_media):
+    rows = user_dao.get_all_users(username, social_media)
     # convert dicts to dataclass objects
     return map_rows_to_objects(User, rows)
 
