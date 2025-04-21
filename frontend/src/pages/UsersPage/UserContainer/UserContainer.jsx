@@ -10,10 +10,8 @@ import {
   Row,
   Select,
 } from "antd";
-import PropTypes from "prop-types";
-import UserTable from "../UserTable/UserTable";
 
-function UserContainer({ mode }) {
+function UserContainer() {
   const [api, contextHolder] = notification.useNotification();
 
   const [userData, setUserData] = useState({
@@ -28,7 +26,6 @@ function UserContainer({ mode }) {
     gender: null,
   });
 
-  const [queryUserData, setQueryUserData] = useState(null);
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -91,27 +88,13 @@ function UserContainer({ mode }) {
     });
   };
 
-  const handleQueryUserData = () => {
-    fetch(
-      `http://127.0.0.1:5000/user/detail?username=${userData.userName}&social_media=${userData.socialMedia}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      }
-    )
-      .then((resp) => resp.json())
-      .then((resp) => setQueryUserData([resp.data]));
-  };
-
   return (
     <>
-      {mode === "enter" ? contextHolder : null}
+      {contextHolder}
       <div>
         <p>
           <b className={`${UserContainer.displayName}-heading-para`}>
-            {mode === "enter" ? "Enter User Information" : "Query User"}
+            Enter User Information
           </b>
         </p>
       </div>
@@ -121,13 +104,9 @@ function UserContainer({ mode }) {
             <Flex align="center">
               <label>
                 User Name:
-                {mode === "enter" ? (
-                  <span
-                    className={`${UserContainer.displayName}-required-star`}
-                  >
-                    *
-                  </span>
-                ) : null}
+                <span className={`${UserContainer.displayName}-required-star`}>
+                  *
+                </span>
               </label>
               <Input
                 value={userData.userName}
@@ -140,13 +119,9 @@ function UserContainer({ mode }) {
             <Flex align="center">
               <label>
                 Social Media:
-                {mode === "enter" ? (
-                  <span
-                    className={`${UserContainer.displayName}-required-star`}
-                  >
-                    *
-                  </span>
-                ) : null}
+                <span className={`${UserContainer.displayName}-required-star`}>
+                  *
+                </span>
               </label>
               <Input
                 name="socialMedia"
@@ -255,33 +230,17 @@ function UserContainer({ mode }) {
           <Button
             color="cyan"
             variant="solid"
-            disabled={mode === "enter" ? !handleDisableButton() : false}
-            onClick={
-              mode === "enter" ? handleEnterUserData : handleQueryUserData
-            }
+            disabled={!handleDisableButton()}
+            onClick={handleEnterUserData}
           >
             Confirm
           </Button>
         </Flex>
-        {mode === "query" ? (
-          <>
-            <hr></hr>
-            <UserTable data={queryUserData} />
-          </>
-        ) : null}
       </div>
     </>
   );
 }
 
 UserContainer.displayName = "user-container";
-
-UserContainer.prototype = {
-  mode: PropTypes.string,
-};
-
-UserContainer.defaultProps = {
-  mode: "enter",
-};
 
 export default UserContainer;
