@@ -11,11 +11,22 @@ def list_users():
     """
     Get all users
     ---
+    parameters:
+      - name: username
+        in: query
+        type: string
+        required: false
+      - name: social_media
+        in: query
+        type: string
+        required: false
     responses:
       200:
         description: A list of users
     """
-    users = user_service.get_all_users()
+    username = request.args.get('username')
+    social_media = request.args.get('social_media')
+    users = user_service.get_all_users(username,social_media)
     return success_response(data=users)
 
 @user_bp.route('/', methods=['POST'])
