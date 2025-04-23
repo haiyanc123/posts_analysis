@@ -5,6 +5,7 @@ import BaseLayoutPage from "./pages/BaseLayoutPage/BaseLayoutPage.jsx";
 import PostPage from "./pages/PostPage/PostPage.jsx";
 import ProjectPage from "./pages/ProjectPage/ProjectPage.jsx";
 import UserPage from "./pages/UsersPage/UserPage.jsx";
+import RepostContainer from "./pages/RepostPage/RepostPage.jsx";
 
 const Routes = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const Routes = createBrowserRouter([
       {
         path: "/user",
         element: <UserPage />,
+      },
+      {
+        path: "/repost",
+        element: <RepostContainer />,
       },
     ],
   },
