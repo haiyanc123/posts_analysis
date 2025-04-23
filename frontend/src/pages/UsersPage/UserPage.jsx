@@ -1,5 +1,6 @@
 import React from "react";
 import UserContainer from "./UserContainer/UserContainer";
+import QueryUser from "./QueryUser/QueryUser";
 
 import "./UserPage.css";
 
@@ -8,9 +9,9 @@ function UserPage() {
     <div className={`${UserPage.displayName}-main-div`}>
       <h2 className={`${UserPage.displayName}-heading`}>User</h2>
       <hr></hr>
-      <UserContainer mode="enter" />
+      <UserContainer />
       <hr></hr>
-      <UserContainer mode="query" />
+      <QueryUser />
     </div>
   );
 }

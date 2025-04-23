@@ -43,9 +43,7 @@ function QueryUser() {
     <>
       <div>
         <p>
-          <b className={`${UserContainer.displayName}-heading-para`}>
-            Query User
-          </b>
+          <b className={`${QueryUser.displayName}-heading-para`}>Query User</b>
         </p>
       </div>
       <div>
@@ -54,7 +52,7 @@ function QueryUser() {
             <Flex align="center">
               <label>
                 User Name:
-                <span className={`${UserContainer.displayName}-required-star`}>
+                <span className={`${QueryUser.displayName}-required-star`}>
                   *
                 </span>
               </label>
@@ -69,7 +67,7 @@ function QueryUser() {
             <Flex align="center">
               <label>
                 Social Media:
-                <span className={`${UserContainer.displayName}-required-star`}>
+                <span className={`${QueryUser.displayName}-required-star`}>
                   *
                 </span>
               </label>
