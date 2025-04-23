@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, DatePicker, Flex, Input, Row } from "antd";
+import { Button, Col, DatePicker, Flex, Input, Row, TimePicker } from "antd";
 
 import PostTable from "../PostTable/PostTable";
 import { createQueryUrl } from "./helper";
@@ -12,7 +12,9 @@ function QueryPost() {
     posterFirstName: "",
     posterLastName: "",
     fromDate: "",
+    fromDateTime: "",
     toDate: "",
+    toDateTime: "",
   });
 
   const [data, setData] = useState(null);
@@ -36,7 +38,20 @@ function QueryPost() {
   };
 
   const handleSubmitButton = () => {
-    const url = createQueryUrl(queryData);
+    const payload = {
+      socialMedia: queryData.socialMedia,
+      userName: queryData.userName,
+      posterFirstName: queryData.posterFirstName,
+      posterLastName: queryData.posterLastName,
+      fromDate: queryData.fromDate
+        ? `${queryData.fromDate} ${queryData.fromDateTime}`
+        : "",
+      toDate: queryData.toDate
+        ? `${queryData.toDate} ${queryData.toDateTime}`
+        : "",
+    };
+
+    const url = createQueryUrl(payload);
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -114,10 +129,32 @@ function QueryPost() {
           </Col>
           <Col>
             <Flex align="center">
+              <label>From Date Time:</label>
+              <TimePicker
+                name="fromDateTime"
+                onChange={(date, value) =>
+                  handleChangeData("fromDateTime", value)
+                }
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
               <label>To Date:</label>
               <DatePicker
                 name="toDate"
                 onChange={(date, value) => handleChangeData("toDate", value)}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>To Date Time:</label>
+              <TimePicker
+                name="toDateTime"
+                onChange={(date, value) =>
+                  handleChangeData("toDateTime", value)
+                }
               />
             </Flex>
           </Col>
