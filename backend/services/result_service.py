@@ -12,9 +12,18 @@ from collections import defaultdict
 
 def create_result(data):
     proj_name = data['proj_name']
-    post_username=data["post_username"]
-    post_social_media = data["post_social_media"]
-    post_time = data["post_time"]
+    post=data["post"]
+    parts = post.split(" & ")
+    if len(parts) >= 3:
+        post_username, post_social_media, post_time_str = parts[0], parts[1], parts[2]
+    else:
+        raise BusinessException("Invalid format of post")
+
+    try:
+        post_time=datetime.strptime(post_time_str, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        raise BusinessException("Invalid post_time format. Expected 'YYYY-MM-DD HH:MM:SS'")
+
     field_name=data['field_name']
     # check if project exist
     project = project_service.find_by_pk(proj_name)
@@ -25,6 +34,10 @@ def create_result(data):
     post=post_service.get_by_pk(post_username,post_social_media,post_time)
     if not post:
         raise BusinessException("post not exists")
+
+    data["post_username"]=post_username
+    data["post_social_media"]=post_social_media
+    data["post_time"]=post_time
 
     try:
         flag=result_dao.insert_result(data)
