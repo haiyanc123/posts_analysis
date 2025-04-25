@@ -23,30 +23,23 @@ function QueryRepost() {
     }));
   };
 
-  const handleChangeData = (id, value) => {
-    setQueryData((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
-
   const handleSubmitButton = () => {
-    // const url = createQueryUrl(queryData);
-    // fetch(url, {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   method: "GET",
-    // })
-    //   .then((resp) => resp.json())
-    //   .then((resp) => {
-    //     setData(resp.data);
-    //   });
+    fetch(
+      `http://127.0.0.1:5000/repost?post_social_media=${queryData.postUserName}&post_username=${queryData.postSocialMedia}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+      }
+    )
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.success) {
+          setData(resp.data);
+        }
+      });
   };
-
-  useEffect(() => {
-    handleSubmitButton();
-  }, []);
 
   //Rendering UI element
   return (

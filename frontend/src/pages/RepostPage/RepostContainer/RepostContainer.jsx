@@ -1,13 +1,25 @@
 import React, { useState } from "react";
-import { Button, Input, DatePicker, notification, Row, Col, Flex } from "antd";
+import {
+  Button,
+  Input,
+  DatePicker,
+  notification,
+  Row,
+  Col,
+  Flex,
+  TimePicker,
+} from "antd";
+import { createPayload } from "./helper";
 
 function RepostContainer() {
   const [api, contextHolder] = notification.useNotification();
   const [formData, setFormData] = useState({
     postDate: "",
+    postTime: "",
     postUserName: "",
     postSocialMedia: "",
     repostDate: "",
+    repostTime: "",
     repostUserName: "",
     repostSocialMedia: "",
   });
@@ -22,28 +34,54 @@ function RepostContainer() {
   };
 
   const handleSubmit = (e) => {
-    // Handle submission logic here
-    api.success({
-      message: "Repost Successful!",
-      description: "Your repost details have been successfully saved.",
-    });
+    const payload = {
+      post_social_media: formData.postSocialMedia,
+      post_username: formData.postUserName,
+      post_time: `${formData.postDate} ${formData.postTime}`,
+      repo_social_media: formData.repostSocialMedia,
+      repo_username: formData.repostUserName,
+      repo_time: `${formData.repostDate} ${formData.repostTime}`,
+    };
+    fetch("http://127.0.0.1:5000/repost/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(payload),
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.success) {
+          api.success({
+            message: "Successfully Repost User To Database",
+          });
+        } else {
+          api.error({
+            message: resp.error,
+          });
+        }
+      });
   };
 
   const handleDisabledButton = () => {
     const {
       postDate,
+      postTime,
       postUserName,
       postSocialMedia,
       repostDate,
+      repostTime,
       repostUserName,
       repostSocialMedia,
     } = formData;
 
     return (
       postDate &&
+      postTime &&
       postUserName &&
       postSocialMedia &&
       repostDate &&
+      repostTime &&
       repostUserName &&
       repostSocialMedia
     );
@@ -58,7 +96,7 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Post Time:
+                Post Date:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
@@ -79,7 +117,28 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Post Username:{" "}
+                Post Time:
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <TimePicker
+                name="postTime"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    postTime: dateString,
+                  }));
+                }}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Post Username:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
@@ -97,7 +156,7 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Post Social Media:{" "}
+                Post Social Media:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
@@ -115,7 +174,7 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Repost Time:{" "}
+                Repost Date:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
@@ -136,7 +195,28 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Repost Username:{" "}
+                Repost Time:
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <TimePicker
+                name="repostTime"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    repostTime: dateString,
+                  }));
+                }}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Repost Username:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
@@ -154,7 +234,7 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Repost Social Media:{" "}
+                Repost Social Media:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >

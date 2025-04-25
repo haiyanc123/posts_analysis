@@ -36,7 +36,11 @@ function QueryUser() {
       }
     )
       .then((resp) => resp.json())
-      .then((resp) => setQueryUserData([resp.data]));
+      .then((resp) => {
+        if (resp.success) {
+          setQueryUserData([resp.data]);
+        }
+      });
   };
 
   return (
