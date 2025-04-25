@@ -47,6 +47,7 @@ const percentageColumn = [
   {
     title: "Field Value",
     key: "fieldValue",
+    dataIndex: "field_value",
   },
   {
     title: "Post Count",

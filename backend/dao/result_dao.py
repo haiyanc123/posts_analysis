@@ -34,14 +34,19 @@ def qry_results(proj_name):
 
 def qry_coverage(proj_name):
     query="""
-    select  
+    select 
     r.field_name,
-    COUNT(DISTINCT CONCAT(r.post_username, '|', r.post_social_media, '|', r.post_time)) count,
-    (SELECT COUNT(DISTINCT CONCAT(post_username, '|', post_social_media, '|', post_time)) 
-       FROM result r2 WHERE r2.proj_name = %s) total
+    r.field_value,
+    COUNT(DISTINCT CONCAT(r.post_username, '|', r.post_social_media, '|', r.post_time)) AS count,
+    (
+        select COUNT(DISTINCT CONCAT(post_username, '|', post_social_media, '|', post_time))
+        from result r2
+        where r2.proj_name = %s and r2.field_name = r.field_name
+    ) AS total
     from result r
-    where r.proj_name =%s
-    group by r.field_name;
+    where r.proj_name = %s
+    group by r.field_name, r.field_value
+
     """
     return execute_query(query, (proj_name,proj_name), fetchall=True)
 

@@ -45,6 +45,12 @@ def get_post_by_pk(post_username,post_social_media,post_time):
     """
     return execute_query(query,(post_username,post_social_media,post_time), fetchone=True)
 
+def qry_all():
+    query="""
+    select * from post
+    """
+    return execute_query(query,fetchall=True)
+
 def insert_post(data):
     query = """
         INSERT INTO post (
