@@ -6,15 +6,8 @@ import RepostTable from "../RepostTable/RepostTable";
 function QueryRepost() {
   //Creating State Data
   const [queryData, setQueryData] = useState({
-    postTime: "",
-    postToTime: "",
     postUserName: "",
     postSocialMedia: "",
-    repostFromTime: "",
-    repostToTime: "",
-    repostUsername:"",
-    repostSocialMedia:"",
-    
   });
 
   const [data, setData] = useState(null);
@@ -55,97 +48,56 @@ function QueryRepost() {
     handleSubmitButton();
   }, []);
 
-  console.log("queryData", queryData)
   //Rendering UI element
   return (
     <>
       <div>
         <p>
-          <b className={`${QueryRepost.displayName}-heading-para`}>Query Post</b>
+          <b className={`${QueryRepost.displayName}-heading-para`}>
+            Query Post
+          </b>
         </p>
       </div>
       <div>
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>Social Media:</label>
-              <DatePicker
-                onChange={handleChangeInput}
-                name="postTime"
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>User Name:</label>
-              <DatePicker
-                name="postToTime"
-                onChange={handleChangeInput}
-                />
-                </Flex>
-              </Col> 
-          <Col>
-            <Flex align="center">
-              <label>User Name:</label>
+              <label>
+                Post User Name:
+                <span className={`${QueryRepost.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="postUserName"
                 onChange={handleChangeInput}
-                value={queryData.userName}
-
+                value={queryData.postUserName}
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
-              <label>Poster First Name:</label>
+              <label>
+                Post Social Media:
+                <span className={`${QueryRepost.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
-                name="posterSocialMedia"
+                name="postSocialMedia"
                 onChange={handleChangeInput}
-                value={queryData.posterFirstName}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Social Media:</label>
-              <DatePicker
-                onChange={handleChangeInput}
-                name="repostFromTime"
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Social Media:</label>
-              <DatePicker
-                onChange={handleChangeInput}
-                name="repostToTime"
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Poster Last Name:</label>
-              <Input
-                name="repostUserName"
-                onChange={handleChangeInput}
-                value={queryData.posterLastName}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Poster Last Name:</label>
-              <Input
-                name="repostSocialMedia"
-                onChange={handleChangeInput}
-                value={queryData.posterLastName}
+                value={queryData.postSocialMedia}
               />
             </Flex>
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button color="cyan" variant="solid" onClick={handleSubmitButton}>
+          <Button
+            color="cyan"
+            variant="solid"
+            onClick={handleSubmitButton}
+            disabled={!(queryData.postSocialMedia && queryData.postUserName)}
+          >
             Confirm
           </Button>
         </Flex>
@@ -156,6 +108,6 @@ function QueryRepost() {
   );
 }
 
-QueryRepost.displayName = "query-post";
+QueryRepost.displayName = "query-repost";
 
 export default QueryRepost;

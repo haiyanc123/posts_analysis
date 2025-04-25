@@ -20,11 +20,6 @@ const listColumn = [
     dataIndex: "post_socialmedia",
   },
   {
-    title: "Text",
-    key: "text",
-    dataIndex: "text",
-  },
-  {
     title: "Repost Time",
     key: "repo_time",
     dataIndex: "repo_time",
@@ -39,9 +34,7 @@ const listColumn = [
     key: "repo_social_media",
     dataIndex: "repo_social_media",
   },
-  
 ];
-
 
 function RepostTable({ data }) {
   //Need to add data when fetching data

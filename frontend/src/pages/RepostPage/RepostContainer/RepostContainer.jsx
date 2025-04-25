@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Button, Input, DatePicker, notification, Row, Col } from 'antd';
+import React, { useState } from "react";
+import { Button, Input, DatePicker, notification, Row, Col, Flex } from "antd";
 
 function RepostContainer() {
+  const [api, contextHolder] = notification.useNotification();
   const [formData, setFormData] = useState({
-    postTime: "",
+    postDate: "",
     postUserName: "",
     postSocialMedia: "",
-    repostTime: "",
+    repostDate: "",
     repostUserName: "",
     repostSocialMedia: "",
   });
@@ -18,90 +19,169 @@ function RepostContainer() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     // Handle submission logic here
-    console.log("Repost submitted:", formData);
-    notification.success({
-      message: 'Repost Successful!',
-      description: 'Your repost details have been successfully saved.',
+    api.success({
+      message: "Repost Successful!",
+      description: "Your repost details have been successfully saved.",
     });
   };
 
-  console.log("formData", formData)
+  const handleDisabledButton = () => {
+    const {
+      postDate,
+      postUserName,
+      postSocialMedia,
+      repostDate,
+      repostUserName,
+      repostSocialMedia,
+    } = formData;
+
+    return (
+      postDate &&
+      postUserName &&
+      postSocialMedia &&
+      repostDate &&
+      repostUserName &&
+      repostSocialMedia
+    );
+  };
+
   return (
-    <div className="repost-container">
-      <h2>Repost Information</h2>
-      <form onSubmit={handleSubmit}>
-        <Row gutter={16}>
-          <Col span={12}>
-            <label>Post Time:</label>
-            <DatePicker
-              name="postTime"
-              value={formData.post_time}
-              onChange={(value) => setFormData({ ...formData, repo_time: value })}
-              style={{ width: '100%' }}
-            />
+    <>
+      {contextHolder}
+      <div className={`${RepostContainer.displayName}-repost-container`}>
+        <h2>Repost Information</h2>
+        <Row gutter={[24, 24]}>
+          <Col>
+            <Flex align="center">
+              <label>
+                Post Time:
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <DatePicker
+                name="postDate"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    postDate: dateString,
+                  }));
+                }}
+              />
+            </Flex>
           </Col>
-          <Col span={12}>
-            <label>Post Username:</label>
-            <Input
-              type="text"
-              name="postUserName"
-              value={formData.post_username}
-              onChange={handleChangeInput}
-              placeholder="Enter post username"
-            />
+          <Col>
+            <Flex align="center">
+              <label>
+                Post Username:{" "}
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <Input
+                type="text"
+                name="postUserName"
+                value={formData.postUserName}
+                onChange={handleChangeInput}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Post Social Media:{" "}
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <Input
+                type="text"
+                name="postSocialMedia"
+                value={formData.postSocialMedia}
+                onChange={handleChangeInput}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Repost Time:{" "}
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <DatePicker
+                name="repostDate"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    repostDate: dateString,
+                  }));
+                }}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Repost Username:{" "}
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <Input
+                type="text"
+                name="repostUserName"
+                value={formData.repostUserName}
+                onChange={handleChangeInput}
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Repost Social Media:{" "}
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <Input
+                type="text"
+                name="repostSocialMedia"
+                value={formData.repostSocialMedia}
+                onChange={handleChangeInput}
+              />
+            </Flex>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <label>Post Social Media:</label>
-            <Input
-              type="text"
-              name="postSocialMedia"
-              value={formData.post_social_media}
-              onChange={handleChangeInput}
-              placeholder="Enter social media"
-            />
-          </Col>
-          <Col span={12}>
-            <label>Repost Time:</label>
-            <DatePicker
-              name="repostTime"
-              value={formData.repo_time}
-              onChange={(value) => setFormData({ ...formData, post_time: value })}
-              style={{ width: '100%' }}
-            />
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <label>Repost Username:</label>
-            <Input
-              type="text"
-              name="repostUsername"
-              value={formData.repo_username}
-              onChange={handleChangeInput}
-              placeholder="Enter repost username"
-            />
-          </Col>
-          <Col span={12}>
-            <label>Repost Social Media:</label>
-            <Input
-              type="text"
-              name="repostSocialMedia"
-              value={formData.repo_social_media}
-              onChange={handleChangeInput}
-              placeholder="Enter social media"
-            />
-          </Col>
-        </Row>
-        <Button type="primary" htmlType="submit" style={{ marginTop: '16px' }}>
-          Submit Repost
-        </Button>
-      </form>
-    </div>
+        <Flex justify="flex-end">
+          <Button
+            color="cyan"
+            variant="solid"
+            disabled={!handleDisabledButton()}
+            onClick={handleSubmit}
+          >
+            Confirmed
+          </Button>
+        </Flex>
+      </div>
+    </>
   );
 }
+
+RepostContainer.displayName = "repost-container";
 
 export default RepostContainer;
