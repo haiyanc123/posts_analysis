@@ -15,7 +15,10 @@ function RepostContainer() {
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setFormData({ ...formData, [name]: value });
+    setFormData((pevState) => ({
+      ...pevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
