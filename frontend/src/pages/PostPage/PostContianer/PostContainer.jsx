@@ -53,12 +53,14 @@ function PostContainer() {
       post_social_media: postData.socialMedia,
       post_time: `${postData.date} ${postData.time}`,
       text: postData.text,
-      has_multimedia: postData.hasMultimedia ? postData.hasMultimedia : 0,
-      likes_num: postData.likesNum ? Number(postData.likesNum) : 0,
-      dislike_num: postData.dislikeNum ? Number(postData.dislikeNum) : 0,
-      city: postData.city,
-      state: postData.state,
-      country: postData.country,
+      ...((postData.hasMultimedia === 0 || postData.hasMultimedia === 1) && {
+        has_multimedia: postData.hasMultimedia,
+      }),
+      ...(postData.likesNum && { likes_num: Number(postData.likesNum) }),
+      ...(postData.dislikeNum && { likes_num: Number(postData.dislikeNum) }),
+      ...(postData.city && { city: postData.city }),
+      ...(postData.state && { state: postData.state }),
+      ...(postData.country && { country: postData.country }),
     };
 
     fetch("http://127.0.0.1:5000/post/", {
@@ -107,7 +109,7 @@ function PostContainer() {
                 name="userName"
                 onChange={handleChangeInput}
                 value={postData.userName}
-                required
+                placeholder="Please do not enter & for username"
               />
             </Flex>
           </Col>
@@ -123,6 +125,7 @@ function PostContainer() {
                 name="socialMedia"
                 onChange={handleChangeInput}
                 value={postData.socialMedia}
+                placeholder="Please do not enter & for social media"
               />
             </Flex>
           </Col>
@@ -166,7 +169,6 @@ function PostContainer() {
                     date: dateString,
                   }));
                 }}
-                // value={postData.date ? dayjs(postData.date) : ""}
               />
             </Flex>
           </Col>
@@ -186,7 +188,6 @@ function PostContainer() {
                     time: timeString,
                   }));
                 }}
-                // value={postData.time ? dayjs(postData.time) : ""}
               />
             </Flex>
           </Col>
