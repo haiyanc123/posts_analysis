@@ -25,7 +25,7 @@ function QueryRepost() {
 
   const handleSubmitButton = () => {
     fetch(
-      `http://127.0.0.1:5000/repost?post_social_media=${queryData.postUserName}&post_username=${queryData.postSocialMedia}`,
+      `http://127.0.0.1:5000/repost/?post_social_media=${queryData.postSocialMedia}&post_username=${queryData.postUserName}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function QueryRepost() {
       <div>
         <p>
           <b className={`${QueryRepost.displayName}-heading-para`}>
-            Query Post
+            Query Repost
           </b>
         </p>
       </div>

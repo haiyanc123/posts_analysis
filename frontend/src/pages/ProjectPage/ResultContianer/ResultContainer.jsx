@@ -31,7 +31,7 @@ function ResultContainer() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        if (resp.ok) {
+        if (resp.success) {
           const options = resp.data.map((item) => ({
             value: item,
             label: item,
