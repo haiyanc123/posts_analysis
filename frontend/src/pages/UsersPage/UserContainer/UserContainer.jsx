@@ -10,6 +10,7 @@ import {
   Row,
   Select,
 } from "antd";
+import { createPayload } from "./helper";
 
 function UserContainer() {
   const [api, contextHolder] = notification.useNotification();
@@ -57,18 +58,7 @@ function UserContainer() {
   };
 
   const handleEnterUserData = () => {
-    const payload = {
-      age: userData.age,
-      birth_country: userData.birthCountry,
-      first_name: userData.firstName,
-      gender: userData.gender,
-      is_verified: userData.isVerified,
-      last_name: userData.lastName,
-      residence_country: userData.residencyCountry,
-      social_media: userData.socialMedia,
-      username: userData.userName,
-    };
-
+    const payload = createPayload(userData);
     fetch("http://127.0.0.1:5000/user/", {
       headers: {
         "Content-Type": "application/json",

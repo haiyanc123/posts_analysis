@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -7,6 +7,7 @@ import {
   Input,
   notification,
   Row,
+  Select,
   TimePicker,
 } from "antd";
 
@@ -14,14 +15,31 @@ function ResultContainer() {
   const [api, contextHolder] = notification.useNotification();
 
   const [resultData, setResultData] = useState({
-    date: null,
-    time: null,
-    socialMedia: "",
-    userName: "",
+    post: "",
     projectName: "",
     fieldName: "",
     fieldValue: "",
   });
+  const [dropdownOptions, setDropdownOptions] = useState(null);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/post/dropdown", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.success) {
+          const options = resp.data.map((item) => ({
+            value: item,
+            label: item,
+          }));
+          setDropdownOptions(options);
+        }
+      });
+  }, []);
 
   const handleChangeInput = (e) => {
     const name = e.target.name;
@@ -34,17 +52,15 @@ function ResultContainer() {
   };
 
   const handleDisabled = () => {
-    const { date, time, projectName, fieldName, fieldValue } = resultData;
-    return projectName && fieldName && fieldValue && date && time;
+    const { post, projectName, fieldName, fieldValue } = resultData;
+    return projectName && fieldName && fieldValue && post;
   };
 
   const handleSubmitData = () => {
     let payload = {
       field_name: resultData.fieldName,
       field_value: resultData.fieldValue,
-      post_social_media: resultData.socialMedia,
-      post_time: `${resultData.date} ${resultData.time}`,
-      post_username: resultData.userName,
+      post: resultData.post,
       proj_name: resultData.projectName,
     };
 
@@ -80,76 +96,22 @@ function ResultContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Date:
+                Post:
                 <span
                   className={`${ResultContainer.displayName}-required-star`}
                 >
                   *
                 </span>
               </label>
-              <DatePicker
-                name="date"
-                onChange={(e, dateString) => {
+              <Select
+                options={dropdownOptions}
+                onChange={(value) =>
                   setResultData((prevState) => ({
                     ...prevState,
-                    date: dateString,
-                  }));
-                }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Time:
-                <span
-                  className={`${ResultContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <TimePicker
-                name="time"
-                onChange={(e, timeString) => {
-                  setResultData((prevState) => ({
-                    ...prevState,
-                    time: timeString,
-                  }));
-                }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Post User Name:
-                <span
-                  className={`${ResultContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <Input
-                value={resultData.userName}
-                onChange={handleChangeInput}
-                name="userName"
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Post Social Media:
-                <span
-                  className={`${ResultContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <Input
-                value={resultData.socialMedia}
-                onChange={handleChangeInput}
-                name="socialMedia"
+                    post: value,
+                  }))
+                }
+                style={{ width: "400px" }}
               />
             </Flex>
           </Col>

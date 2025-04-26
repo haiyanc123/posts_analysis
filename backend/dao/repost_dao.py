@@ -4,7 +4,7 @@ from dao.db_helper import execute_query
 def insert_repost(data):
     query = """
         INSERT INTO repost (
-            repo_username, repo_social_media,repo_time
+            repo_username, repo_social_media,repo_time,
             post_username, post_social_media,post_time
         ) VALUES (%s, %s, %s, %s, %s, %s)
     """
