@@ -111,7 +111,7 @@ function ResultContainer() {
                     post: value,
                   }))
                 }
-                style={{ width: "240px" }}
+                style={{ width: "400px" }}
               />
             </Flex>
           </Col>
