@@ -75,7 +75,14 @@ function ProjectContainer() {
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>Project Name:</label>
+              <label>
+                Project Name:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <Input
                 value={projectData.projectName}
                 onChange={handleChangeInput}
@@ -95,7 +102,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Start Date:</label>
+              <label>
+                Start Date:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <DatePicker
                 name="start_date"
                 onChange={(e, dateString) => {
@@ -109,7 +123,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>End Date:</label>
+              <label>
+                End Date:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <DatePicker
                 name="end_date"
                 onChange={(e, dateString) => {
@@ -123,7 +144,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Manager:</label>
+              <label>
+                Manager:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <Input
                 name="manager"
                 onChange={handleChangeInput}

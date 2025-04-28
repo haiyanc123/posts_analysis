@@ -18,8 +18,13 @@ function QueryProject() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        setPostData(resp.data[0].posts);
-        setPercentageData(resp.data[0].coverage);
+        if (resp.data.length > 0) {
+          setPostData(resp.data[0].posts);
+          setPercentageData(resp.data[0].coverage);
+        } else {
+          setPostData(null);
+          setPercentageData(null);
+        }
       });
   };
 
@@ -36,7 +41,9 @@ function QueryProject() {
             <Flex align="center">
               <label>
                 Project Name:
-                <span className="required-star">*</span>
+                <span className={`${QueryProject.displayName}-required-star`}>
+                  *
+                </span>
               </label>
               <Input
                 value={projectName}

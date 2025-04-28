@@ -70,17 +70,19 @@ function ResultContainer() {
       },
       method: "POST",
       body: JSON.stringify(payload),
-    }).then((resp) => {
-      if (resp.ok) {
-        api.success({
-          message: "Successfully Added Result To Database",
-        });
-      } else {
-        api.error({
-          message: "There was an error",
-        });
-      }
-    });
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.ok) {
+          api.success({
+            message: "Successfully Added Result To Database",
+          });
+        } else {
+          api.error({
+            message: resp.error,
+          });
+        }
+      });
   };
 
   return (

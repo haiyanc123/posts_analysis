@@ -10,6 +10,7 @@ from utils.custom_exceptions import BusinessException
 
 
 def create_post(data):
+    print("data", data)
     # Example business rule
     username=data["post_username"]
     social_media=data['post_social_media']
