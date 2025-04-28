@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -8,20 +8,39 @@ import {
   Col,
   Flex,
   TimePicker,
+  Select,
 } from "antd";
 
 function RepostContainer() {
   const [api, contextHolder] = notification.useNotification();
   const [formData, setFormData] = useState({
-    postDate: "",
-    postTime: "",
-    postUserName: "",
-    postSocialMedia: "",
+    post: "",
     repostDate: "",
     repostTime: "",
     repostUserName: "",
     repostSocialMedia: "",
   });
+
+  const [dropdownOptions, setDropdownOptions] = useState(null);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/post/dropdown", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.success) {
+          const options = resp.data.map((item) => ({
+            value: item,
+            label: item,
+          }));
+          setDropdownOptions(options);
+        }
+      });
+  }, []);
 
   const handleChangeInput = (e) => {
     const name = e.target.name;
@@ -34,9 +53,7 @@ function RepostContainer() {
 
   const handleSubmit = (e) => {
     const payload = {
-      post_social_media: formData.postSocialMedia,
-      post_username: formData.postUserName,
-      post_time: `${formData.postDate} ${formData.postTime}`,
+      post: formData.post,
       repo_social_media: formData.repostSocialMedia,
       repo_username: formData.repostUserName,
       repo_time: `${formData.repostDate} ${formData.repostTime}`,
@@ -63,26 +80,11 @@ function RepostContainer() {
   };
 
   const handleDisabledButton = () => {
-    const {
-      postDate,
-      postTime,
-      postUserName,
-      postSocialMedia,
-      repostDate,
-      repostTime,
-      repostUserName,
-      repostSocialMedia,
-    } = formData;
+    const { post, repostDate, repostTime, repostUserName, repostSocialMedia } =
+      formData;
 
     return (
-      postDate &&
-      postTime &&
-      postUserName &&
-      postSocialMedia &&
-      repostDate &&
-      repostTime &&
-      repostUserName &&
-      repostSocialMedia
+      post && repostDate && repostTime && repostUserName && repostSocialMedia
     );
   };
 
@@ -95,78 +97,22 @@ function RepostContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Post Date:
+                Post:
                 <span
                   className={`${RepostContainer.displayName}-required-star`}
                 >
                   *
                 </span>
               </label>
-              <DatePicker
-                name="postDate"
-                onChange={(e, dateString) => {
+              <Select
+                options={dropdownOptions}
+                onChange={(value) =>
                   setFormData((prevState) => ({
                     ...prevState,
-                    postDate: dateString,
-                  }));
-                }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Post Time:
-                <span
-                  className={`${RepostContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <TimePicker
-                name="postTime"
-                onChange={(e, dateString) => {
-                  setFormData((prevState) => ({
-                    ...prevState,
-                    postTime: dateString,
-                  }));
-                }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Post Username:
-                <span
-                  className={`${RepostContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <Input
-                type="text"
-                name="postUserName"
-                value={formData.postUserName}
-                onChange={handleChangeInput}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Post Social Media:
-                <span
-                  className={`${RepostContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <Input
-                type="text"
-                name="postSocialMedia"
-                value={formData.postSocialMedia}
-                onChange={handleChangeInput}
+                    post: value,
+                  }))
+                }
+                style={{ width: "400px" }}
               />
             </Flex>
           </Col>

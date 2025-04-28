@@ -60,7 +60,11 @@ function QueryPost() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        setData(resp.data);
+        if (resp.data.length > 0) {
+          setData(resp.data);
+        } else {
+          setData(null);
+        }
       });
   };
 

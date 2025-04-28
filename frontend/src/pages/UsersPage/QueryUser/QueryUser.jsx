@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Button, Col, Flex, Input, Row } from "antd";
+import { Button, Col, Flex, Input, notification, Row } from "antd";
 import UserTable from "../UserTable/UserTable";
 
 function QueryUser() {
+  const [api, contextHolder] = notification.useNotification();
   const [userData, setUserData] = useState({
     userName: "",
     socialMedia: "",
   });
 
   const [queryUserData, setQueryUserData] = useState(null);
+
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -26,6 +28,7 @@ function QueryUser() {
   };
 
   const handleQueryUserData = () => {
+    setQueryUserData(null);
     fetch(
       `http://127.0.0.1:5000/user/detail?username=${userData.userName}&social_media=${userData.socialMedia}`,
       {
@@ -39,12 +42,18 @@ function QueryUser() {
       .then((resp) => {
         if (resp.success) {
           setQueryUserData([resp.data]);
+        } else {
+          setQueryUserData(null);
+          api.error({
+            message: resp.error,
+          });
         }
       });
   };
 
   return (
     <>
+      {contextHolder}
       <div>
         <p>
           <b className={`${QueryUser.displayName}-heading-para`}>Query User</b>

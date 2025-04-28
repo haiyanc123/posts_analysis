@@ -104,6 +104,7 @@ function UserContainer() {
                 value={userData.userName}
                 onChange={handleChangeInput}
                 name="userName"
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
@@ -119,6 +120,7 @@ function UserContainer() {
                 name="socialMedia"
                 onChange={handleChangeInput}
                 value={userData.socialMedia}
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>

@@ -42,9 +42,9 @@ function PostContainer() {
   };
 
   const handleDisabledButton = () => {
-    const { userName, socialMedia, time } = postData;
+    const { userName, socialMedia, time, text } = postData;
 
-    return userName && socialMedia && time;
+    return userName && socialMedia && time && text;
   };
 
   const handleSubmitButton = () => {
@@ -57,7 +57,7 @@ function PostContainer() {
         has_multimedia: postData.hasMultimedia,
       }),
       ...(postData.likesNum && { likes_num: Number(postData.likesNum) }),
-      ...(postData.dislikeNum && { likes_num: Number(postData.dislikeNum) }),
+      ...(postData.dislikeNum && { dislike_num: Number(postData.dislikeNum) }),
       ...(postData.city && { city: postData.city }),
       ...(postData.state && { state: postData.state }),
       ...(postData.country && { country: postData.country }),
@@ -109,7 +109,7 @@ function PostContainer() {
                 name="userName"
                 onChange={handleChangeInput}
                 value={postData.userName}
-                placeholder="Please do not enter & for username"
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
@@ -125,13 +125,18 @@ function PostContainer() {
                 name="socialMedia"
                 onChange={handleChangeInput}
                 value={postData.socialMedia}
-                placeholder="Please do not enter & for social media"
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
-              <label>Text:</label>
+              <label>
+                Text:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="text"
                 onChange={handleChangeInput}

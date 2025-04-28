@@ -28,13 +28,29 @@ const listColumn = [
     title: "Field Value",
     key: "fieldValue",
     render: (_, projectName) => (
-      <span>{projectName.fileds[0].field_value}</span>
+      <span>
+        {projectName.fileds.map((name, index, arr) => (
+          <span key={name}>
+            {name.field_value}
+            {index !== arr.length - 1 && ", "}
+          </span>
+        ))}
+      </span>
     ),
   },
   {
     title: "Field Name",
     key: "fieldName",
-    render: (_, projectName) => <span>{projectName.fileds[0].field_name}</span>,
+    render: (_, projectName) => (
+      <span>
+        {projectName.fileds.map((name, index, arr) => (
+          <span key={name}>
+            {name.field_name}
+            {index !== arr.length - 1 && ", "}
+          </span>
+        ))}
+      </span>
+    ),
   },
 ];
 
@@ -58,6 +74,7 @@ const percentageColumn = [
     title: "Post Percentage",
     key: "coverage",
     dataIndex: "coverage",
+    render: (_, projectName) => <span>{`${projectName.coverage}%`}</span>,
   },
 ];
 
