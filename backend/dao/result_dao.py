@@ -8,12 +8,12 @@ def insert_result(data):
         ) VALUES (%s, %s, %s, %s,%s,%s)
     """
     values = (
-        data['proj_name'],
-        data['post_username'],
-        data['post_social_media'],
-        data['post_time'],
-        data['field_name'],
-        data['field_value']
+        data.get('proj_name'),
+        data.get('post_username'),
+        data.get('post_social_media'),
+        data.get('post_time'),
+        data.get('field_name'),
+        data.get('field_value')
     )
     return execute_query(query, values, commit=True)
 
