@@ -28,11 +28,7 @@ def create_repost():
               type: string
             repo_time:
               type: string
-            post_username:
-              type: string
-            post_social_media:
-              type: string
-            post_time:
+            post:
               type: string
     responses:
       201:

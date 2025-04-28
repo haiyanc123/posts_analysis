@@ -20,11 +20,11 @@ def insert_project(data):
             ) VALUES (%s, %s, %s, %s, %s)
         """
     values = (
-        data['proj_name'],
-        data['institute'],
-        data['manager'],
-        data['start_date'],
-        data['end_date']
+        data.get('proj_name'),
+        data.get('institute'),
+        data.get('manager'),
+        data.get('start_date'),
+        data.get('end_date')
     )
     return execute_query(query, values, commit=True)
 
