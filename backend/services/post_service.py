@@ -26,7 +26,7 @@ def create_post(data):
         flag=post_dao.insert_post(data)
     except IntegrityError as e:
         if e.errno == 1062:  # 1062 = duplicate entry
-            raise BusinessException("Duplicate entry: post already exists")
+            raise BusinessException("a user cannot post more than one post in one media at the same time")
         else:
             raise BusinessException()
     return flag

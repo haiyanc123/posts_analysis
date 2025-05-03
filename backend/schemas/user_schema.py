@@ -11,7 +11,7 @@ class CreateUserSchema(Schema):
     last_name = fields.String(required=False,validate=validate.Length(max=255))
     birth_country = fields.String(required=False, validate=validate.Length(max=255))
     residence_country = fields.String(required=False, validate=validate.Length(max=255))
-    age = fields.Integer(validate=validate.Range(min=0, max=120))
+    age = fields.Integer(validate=validate.Range(min=0, max=120),allow_none=True)
     gender = fields.Integer(validate=validate.OneOf([0, 1, 2]))
 
 class UserQuerySchema(Schema):
