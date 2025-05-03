@@ -13,6 +13,12 @@ def create_post(data):
     # Example business rule
     username=data["post_username"]
     social_media=data['post_social_media']
+    if  " & "  in username:
+        raise BusinessException("username is not allowed to have ' & '")
+    if  " & "  in social_media:
+        raise BusinessException("social_media is not allowed to have ' & '")
+    if  " & "  in data["text"]:
+        raise BusinessException("text is not allowed to have ' & '")
     user=user_service.find_user_by_pk(username,social_media)
     if not user:
         raise BusinessException("poster not exists")
@@ -20,7 +26,7 @@ def create_post(data):
         flag=post_dao.insert_post(data)
     except IntegrityError as e:
         if e.errno == 1062:  # 1062 = duplicate entry
-            raise BusinessException("Duplicate entry: post already exists")
+            raise BusinessException("a user cannot post more than one post in one media at the same time")
         else:
             raise BusinessException()
     return flag
@@ -67,3 +73,19 @@ def group_full_posts_with_experiments(rows):
             grouped[post_key]["experiments"].append(row["proj_name"])
 
     return list(grouped.values())
+
+def qry_dropdown():
+    rows=post_dao.qry_all()
+    res=[]
+    for row in rows:
+        username=row["post_username"]
+        social_media=row["post_social_media"]
+        post_time=row["post_time"]
+        text = row["text"]
+        text_snippet = text[:4] + "..." if len(text) > 4 else text
+
+        str = f"{username} & {social_media} & {post_time} & {text_snippet}"
+        res.append(str)
+    return res
+
+

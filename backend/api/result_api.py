@@ -21,11 +21,7 @@ def create_result():
           properties:
             proj_name:
               type: string
-            post_username:
-              type: string
-            post_social_media:
-              type: string
-            post_time:
+            post:
               type: string
             field_name:
               type: string

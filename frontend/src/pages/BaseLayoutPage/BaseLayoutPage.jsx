@@ -28,6 +28,10 @@ const menuLinks = [
     nav: "/project",
   },
   {
+    label: "Repost",
+    nav: "/repost",
+  },
+  {
     label: "User",
     nav: "/user",
   },

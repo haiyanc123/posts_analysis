@@ -13,7 +13,7 @@ repost_bp = Blueprint('repost', __name__)
 @repost_bp.route('/', methods=['POST'])
 def create_repost():
     """
-    Create a new user
+    repost a post
     ---
     parameters:
       - name: body
@@ -28,11 +28,7 @@ def create_repost():
               type: string
             repo_time:
               type: string
-            post_username:
-              type: string
-            post_social_media:
-              type: string
-            post_time:
+            post:
               type: string
     responses:
       201:

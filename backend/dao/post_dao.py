@@ -45,6 +45,12 @@ def get_post_by_pk(post_username,post_social_media,post_time):
     """
     return execute_query(query,(post_username,post_social_media,post_time), fetchone=True)
 
+def qry_all():
+    query="""
+    select * from post
+    """
+    return execute_query(query,fetchall=True)
+
 def insert_post(data):
     query = """
         INSERT INTO post (
@@ -53,16 +59,16 @@ def insert_post(data):
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s,%s)
     """
     values = (
-        data['post_username'],
-        data['post_social_media'],
-        data['text'],
-        data['has_multimedia'],
-        data['post_time'],
-        data['likes_num'],
-        data['dislike_num'],
-        data['city'],
-        data['state'],
-        data['country']
+        data.get('post_username'),
+        data.get('post_social_media'),
+        data.get('text'),
+        data.get('has_multimedia'),
+        data.get('post_time'),
+        data.get('likes_num'),
+        data.get('dislike_num'),
+        data.get('city'),
+        data.get('state'),
+        data.get('country')
     )
     return execute_query(query, values, commit=True)
 

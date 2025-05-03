@@ -135,8 +135,23 @@ def qry_list():
     posts=post_service.qry_posts(post_username,post_social_media,start_time,end_time,first_name,last_name)
     return success_response(data=serialize(posts))
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+@post_bp.route('/dropdown', methods=['GET'])
+def qry_post_dropdown():
+    """
+    Find dropdown for posts
+    ---
+    responses:
+      200:
+        description: A list of posts
+    """
+
+    res=post_service.qry_dropdown()
+    return success_response(data=res)
+>>>>>>> origin/dev

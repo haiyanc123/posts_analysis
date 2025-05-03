@@ -28,8 +28,8 @@ function ProjectContainer() {
       proj_name: projectData.projectName,
       institute: projectData.manager,
       manager: projectData.institute,
-      start_date: projectData.end_date,
-      end_date: projectData.start_date,
+      start_date: projectData.start_date,
+      end_date: projectData.end_date,
     };
 
     fetch("http://127.0.0.1:5000/project/", {
@@ -75,7 +75,14 @@ function ProjectContainer() {
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>Project Name:</label>
+              <label>
+                Project Name:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <Input
                 value={projectData.projectName}
                 onChange={handleChangeInput}
@@ -86,6 +93,9 @@ function ProjectContainer() {
           <Col>
             <Flex align="center">
               <label>institute:</label>
+              <span className={`${ProjectContainer.displayName}-required-star`}>
+                *
+              </span>
               <Input
                 name="institute"
                 onChange={handleChangeInput}
@@ -95,7 +105,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Start Date:</label>
+              <label>
+                Start Date:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <DatePicker
                 name="start_date"
                 onChange={(e, dateString) => {
@@ -109,7 +126,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>End Date:</label>
+              <label>
+                End Date:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <DatePicker
                 name="end_date"
                 onChange={(e, dateString) => {
@@ -123,7 +147,14 @@ function ProjectContainer() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>Manager:</label>
+              <label>
+                Manager:
+                <span
+                  className={`${ProjectContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
               <Input
                 name="manager"
                 onChange={handleChangeInput}

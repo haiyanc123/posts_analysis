@@ -12,9 +12,28 @@ from utils.custom_exceptions import BusinessException
 
 def create_repost(data):
     # Example business rule
-    post_username = data["post_username"]
-    post_social_media = data['post_social_media']
-    post_time = data['post_time']
+    # post_username=data["post_username"]
+    # post_social_media=data['post_social_media']
+    # post_time = data['post_time']
+    post = data["post"]
+    parts = post.split(" & ")
+    if len(parts) >= 3:
+        post_username, post_social_media, post_time_str = parts[0], parts[1], parts[2]
+    else:
+        raise BusinessException("Invalid format of post")
+    try:
+        post_time = datetime.strptime(post_time_str, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        raise BusinessException("Invalid post_time format. Expected 'YYYY-MM-DD HH:MM:SS'")
+
+
+    if data["repo_time"]< post_time:
+        raise BusinessException("Repost time cannot be before the original post time.")
+
+    data["post_username"] = post_username
+    data["post_social_media"] = post_social_media
+    data["post_time"] = post_time
+
     repo_username = data["repo_username"]
     repo_social_media = data['repo_social_media']
     user = user_service.find_user_by_pk(repo_username,repo_social_media)

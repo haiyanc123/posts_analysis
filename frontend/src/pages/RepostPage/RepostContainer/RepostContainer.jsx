@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
-  Col,
-  DatePicker,
-  Flex,
   Input,
+  DatePicker,
   notification,
   Row,
-  Select,
+  Col,
+  Flex,
   TimePicker,
+  Select,
 } from "antd";
 
-function ResultContainer() {
+function RepostContainer() {
   const [api, contextHolder] = notification.useNotification();
-
-  const [resultData, setResultData] = useState({
+  const [formData, setFormData] = useState({
     post: "",
-    projectName: "",
-    fieldName: "",
-    fieldValue: "",
+    repostDate: "",
+    repostTime: "",
+    repostUserName: "",
+    repostSocialMedia: "",
   });
+
   const [dropdownOptions, setDropdownOptions] = useState(null);
 
   useEffect(() => {
@@ -44,27 +45,20 @@ function ResultContainer() {
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
-    setResultData((prevData) => ({
-      ...prevData,
+    setFormData((pevState) => ({
+      ...pevState,
       [name]: value,
     }));
   };
 
-  const handleDisabled = () => {
-    const { post, projectName, fieldName, fieldValue } = resultData;
-    return projectName && fieldName && fieldValue && post;
-  };
-
-  const handleSubmitData = () => {
-    let payload = {
-      field_name: resultData.fieldName,
-      field_value: resultData.fieldValue,
-      post: resultData.post,
-      proj_name: resultData.projectName,
+  const handleSubmit = (e) => {
+    const payload = {
+      post: formData.post,
+      repo_social_media: formData.repostSocialMedia,
+      repo_username: formData.repostUserName,
+      repo_time: `${formData.repostDate} ${formData.repostTime}`,
     };
-
-    fetch("http://127.0.0.1:5000/result/", {
+    fetch("http://127.0.0.1:5000/repost/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -75,7 +69,7 @@ function ResultContainer() {
       .then((resp) => {
         if (resp.success) {
           api.success({
-            message: "Successfully Added Result To Database",
+            message: "Successfully Repost User To Database",
           });
         } else {
           api.error({
@@ -85,22 +79,27 @@ function ResultContainer() {
       });
   };
 
+  const handleDisabledButton = () => {
+    const { post, repostDate, repostTime, repostUserName, repostSocialMedia } =
+      formData;
+
+    return (
+      post && repostDate && repostTime && repostUserName && repostSocialMedia
+    );
+  };
+
   return (
     <>
       {contextHolder}
-      <div>
-        <p>
-          <b>Enter Project Result Information</b>
-        </p>
-      </div>
-      <div>
+      <div className={`${RepostContainer.displayName}-repost-container`}>
+        <h2>Repost Information</h2>
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
               <label>
                 Post:
                 <span
-                  className={`${ResultContainer.displayName}-required-star`}
+                  className={`${RepostContainer.displayName}-required-star`}
                 >
                   *
                 </span>
@@ -108,7 +107,7 @@ function ResultContainer() {
               <Select
                 options={dropdownOptions}
                 onChange={(value) =>
-                  setResultData((prevState) => ({
+                  setFormData((prevState) => ({
                     ...prevState,
                     post: value,
                   }))
@@ -120,51 +119,78 @@ function ResultContainer() {
           <Col>
             <Flex align="center">
               <label>
-                Project Name:
+                Repost Date:
                 <span
-                  className={`${ResultContainer.displayName}-required-star`}
+                  className={`${RepostContainer.displayName}-required-star`}
                 >
                   *
                 </span>
               </label>
-              <Input
-                value={resultData.projectName}
-                onChange={handleChangeInput}
-                name="projectName"
+              <DatePicker
+                name="repostDate"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    repostDate: dateString,
+                  }));
+                }}
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
               <label>
-                Field Name:
+                Repost Time:
                 <span
-                  className={`${ResultContainer.displayName}-required-star`}
+                  className={`${RepostContainer.displayName}-required-star`}
                 >
                   *
                 </span>
               </label>
-              <Input
-                value={resultData.fieldName}
-                onChange={handleChangeInput}
-                name="fieldName"
+              <TimePicker
+                name="repostTime"
+                onChange={(e, dateString) => {
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    repostTime: dateString,
+                  }));
+                }}
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
               <label>
-                Field Value:
+                Repost Username:
                 <span
-                  className={`${ResultContainer.displayName}-required-star`}
+                  className={`${RepostContainer.displayName}-required-star`}
                 >
                   *
                 </span>
               </label>
               <Input
-                value={resultData.fieldValue}
+                type="text"
+                name="repostUserName"
+                value={formData.repostUserName}
                 onChange={handleChangeInput}
-                name="fieldValue"
+              />
+            </Flex>
+          </Col>
+          <Col>
+            <Flex align="center">
+              <label>
+                Repost Social Media:
+                <span
+                  className={`${RepostContainer.displayName}-required-star`}
+                >
+                  *
+                </span>
+              </label>
+              <Input
+                type="text"
+                name="repostSocialMedia"
+                value={formData.repostSocialMedia}
+                onChange={handleChangeInput}
               />
             </Flex>
           </Col>
@@ -173,10 +199,10 @@ function ResultContainer() {
           <Button
             color="cyan"
             variant="solid"
-            disabled={!handleDisabled()}
-            onClick={handleSubmitData}
+            disabled={!handleDisabledButton()}
+            onClick={handleSubmit}
           >
-            Confirm
+            Confirmed
           </Button>
         </Flex>
       </div>
@@ -184,6 +210,6 @@ function ResultContainer() {
   );
 }
 
-ResultContainer.displayName = "result-container";
+RepostContainer.displayName = "repost-container";
 
-export default ResultContainer;
+export default RepostContainer;

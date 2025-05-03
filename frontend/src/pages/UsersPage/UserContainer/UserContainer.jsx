@@ -10,6 +10,7 @@ import {
   Row,
   Select,
 } from "antd";
+import { createPayload } from "./helper";
 
 function UserContainer() {
   const [api, contextHolder] = notification.useNotification();
@@ -22,7 +23,7 @@ function UserContainer() {
     lastName: "",
     birthCountry: "",
     residencyCountry: "",
-    age: "",
+    age: null,
     gender: null,
   });
 
@@ -33,13 +34,6 @@ function UserContainer() {
     setUserData((prevState) => ({
       ...prevState,
       [name]: value,
-    }));
-  };
-
-  const handleChangeAge = (value) => {
-    setUserData((prevState) => ({
-      ...prevState,
-      age: value,
     }));
   };
 
@@ -57,37 +51,34 @@ function UserContainer() {
   };
 
   const handleEnterUserData = () => {
-    const payload = {
-      age: userData.age,
-      birth_country: userData.birthCountry,
-      first_name: userData.firstName,
-      gender: userData.gender,
-      is_verified: userData.isVerified,
-      last_name: userData.lastName,
-      residence_country: userData.residencyCountry,
-      social_media: userData.socialMedia,
-      username: userData.userName,
-    };
-
-    fetch("http://127.0.0.1:5000/user/", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(payload),
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        if (resp.success) {
-          api.success({
-            message: "Successfully Added User To Database",
-          });
-        } else {
-          api.error({
-            message: resp.error,
-          });
-        }
-      });
+    try {
+      Number(userData.age) === NaN;
+      if (Number(userData.age) === NaN) {
+        throw "Invalid Age Input";
+      }
+      const payload = createPayload(userData);
+      fetch("http://127.0.0.1:5000/user/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(payload),
+      })
+        .then((resp) => resp.json())
+        .then((resp) => {
+          if (resp.success) {
+            api.success({
+              message: "Successfully Added User To Database",
+            });
+          } else {
+            api.error({
+              message: resp.error,
+            });
+          }
+        });
+    } catch (e) {
+      console.log("Hello", e);
+    }
   };
 
   return (
@@ -114,6 +105,7 @@ function UserContainer() {
                 value={userData.userName}
                 onChange={handleChangeInput}
                 name="userName"
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
@@ -129,6 +121,7 @@ function UserContainer() {
                 name="socialMedia"
                 onChange={handleChangeInput}
                 value={userData.socialMedia}
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
@@ -195,9 +188,9 @@ function UserContainer() {
           <Col>
             <Flex align="center">
               <label>Age:</label>
-              <InputNumber
+              <Input
                 name="age"
-                onChange={handleChangeAge}
+                onChange={handleChangeInput}
                 value={userData.age}
               />
             </Flex>

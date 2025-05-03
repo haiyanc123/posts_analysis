@@ -27,7 +27,6 @@ function PostContainer() {
     city: "",
     state: "",
     country: "",
-    projectName: "",
   });
 
   //Handing Input Changes
@@ -42,9 +41,9 @@ function PostContainer() {
   };
 
   const handleDisabledButton = () => {
-    const { userName, socialMedia, time } = postData;
+    const { userName, socialMedia, time, text } = postData;
 
-    return userName && socialMedia && time;
+    return userName && socialMedia && time && text;
   };
 
   const handleSubmitButton = () => {
@@ -53,12 +52,14 @@ function PostContainer() {
       post_social_media: postData.socialMedia,
       post_time: `${postData.date} ${postData.time}`,
       text: postData.text,
-      has_multimedia: postData.hasMultimedia ? postData.hasMultimedia : 0,
-      likes_num: postData.likesNum ? Number(postData.likesNum) : 0,
-      dislike_num: postData.dislikeNum ? Number(postData.dislikeNum) : 0,
-      city: postData.city,
-      state: postData.state,
-      country: postData.country,
+      ...((postData.hasMultimedia === 0 || postData.hasMultimedia === 1) && {
+        has_multimedia: postData.hasMultimedia,
+      }),
+      ...(postData.likesNum && { likes_num: postData.likesNum }),
+      ...(postData.dislikeNum && { dislike_num: postData.dislikeNum }),
+      ...(postData.city && { city: postData.city }),
+      ...(postData.state && { state: postData.state }),
+      ...(postData.country && { country: postData.country }),
     };
 
     fetch("http://127.0.0.1:5000/post/", {
@@ -72,7 +73,7 @@ function PostContainer() {
       .then((resp) => {
         if (resp.success) {
           api.success({
-            message: "Successfully Added User To Database",
+            message: "Successfully Added Post To Database",
           });
         } else {
           api.error({
@@ -107,7 +108,7 @@ function PostContainer() {
                 name="userName"
                 onChange={handleChangeInput}
                 value={postData.userName}
-                required
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
@@ -123,12 +124,18 @@ function PostContainer() {
                 name="socialMedia"
                 onChange={handleChangeInput}
                 value={postData.socialMedia}
+                placeholder="Please do not enter &"
               />
             </Flex>
           </Col>
           <Col>
             <Flex align="center">
-              <label>Text:</label>
+              <label>
+                Text:
+                <span className={`${PostContainer.displayName}-required-star`}>
+                  *
+                </span>
+              </label>
               <Input
                 name="text"
                 onChange={handleChangeInput}
@@ -166,7 +173,6 @@ function PostContainer() {
                     date: dateString,
                   }));
                 }}
-                // value={postData.date ? dayjs(postData.date) : ""}
               />
             </Flex>
           </Col>
@@ -186,7 +192,6 @@ function PostContainer() {
                     time: timeString,
                   }));
                 }}
-                // value={postData.time ? dayjs(postData.time) : ""}
               />
             </Flex>
           </Col>
@@ -237,16 +242,6 @@ function PostContainer() {
                 name="country"
                 onChange={handleChangeInput}
                 value={postData.country}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Project Name:</label>
-              <Input
-                name="projectName"
-                onChange={handleChangeInput}
-                value={postData.projectName}
               />
             </Flex>
           </Col>
