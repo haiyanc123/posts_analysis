@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Flex, Input, notification, Row } from "antd";
+
+import { createQueryUrl } from "./helper";
 import UserTable from "../UserTable/UserTable";
 
 function QueryUser() {
@@ -21,27 +23,19 @@ function QueryUser() {
     }));
   };
 
-  const handleDisableButton = () => {
-    const { userName, socialMedia } = userData;
-
-    return userName && socialMedia;
-  };
-
   const handleQueryUserData = () => {
     setQueryUserData(null);
-    fetch(
-      `http://127.0.0.1:5000/user/detail?username=${userData.userName}&social_media=${userData.socialMedia}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      }
-    )
+    const url = createQueryUrl(userData);
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp.success) {
-          setQueryUserData([resp.data]);
+          setQueryUserData(resp.data);
         } else {
           setQueryUserData(null);
           api.error({
@@ -63,12 +57,7 @@ function QueryUser() {
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>
-                User Name:
-                <span className={`${QueryUser.displayName}-required-star`}>
-                  *
-                </span>
-              </label>
+              <label>User Name:</label>
               <Input
                 value={userData.userName}
                 onChange={handleChangeInput}
@@ -78,12 +67,7 @@ function QueryUser() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>
-                Social Media:
-                <span className={`${QueryUser.displayName}-required-star`}>
-                  *
-                </span>
-              </label>
+              <label>Social Media:</label>
               <Input
                 name="socialMedia"
                 onChange={handleChangeInput}
@@ -93,12 +77,7 @@ function QueryUser() {
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button
-            color="cyan"
-            variant="solid"
-            disabled={!handleDisableButton()}
-            onClick={handleQueryUserData}
-          >
+          <Button color="cyan" variant="solid" onClick={handleQueryUserData}>
             Confirm
           </Button>
         </Flex>

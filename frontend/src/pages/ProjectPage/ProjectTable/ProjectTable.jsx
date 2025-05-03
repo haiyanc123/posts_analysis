@@ -8,21 +8,31 @@ const listColumn = [
     title: "Post time",
     key: "post_time",
     dataIndex: "post_time",
+    render: (_, postData) => (
+      <span>{postData.post_time ? postData.post_time : "-"}</span>
+    ),
   },
   {
     title: "Post Username",
     key: "post_username",
     dataIndex: "post_username",
+    render: (_, postData) => (
+      <span>{postData.post_username ? postData.post_username : "-"}</span>
+    ),
   },
   {
     title: "Post Social Media",
     key: "post_socialmedia",
     dataIndex: "post_socialmedia",
+    render: (_, postData) => (
+      <span>{postData.post_socialmedia ? postData.post_socialmedia : "-"}</span>
+    ),
   },
   {
     title: "Text",
     key: "text",
     dataIndex: "text",
+    render: (_, postData) => <span>{postData.text ? postData.text : "-"}</span>,
   },
   {
     title: "Field Value",
@@ -59,22 +69,27 @@ const percentageColumn = [
     title: "Field Name",
     key: "fieldName",
     dataIndex: "field_name",
+    render: (_, data) => <span>{data.field_name ? data.field_name : "-"}</span>,
   },
   {
     title: "Field Value",
     key: "fieldValue",
     dataIndex: "field_value",
+    render: (_, data) => (
+      <span>{data.field_value ? data.field_value : "-"}</span>
+    ),
   },
   {
     title: "Post Count",
     key: "count",
     dataIndex: "count",
+    render: (_, data) => <span>{data.count ? data.count : "-"}</span>,
   },
   {
     title: "Post Percentage",
     key: "coverage",
     dataIndex: "coverage",
-    render: (_, projectName) => <span>{`${projectName.coverage}%`}</span>,
+    render: (_, data) => <span>{`${data.coverage}%`}</span>,
   },
 ];
 
@@ -83,7 +98,7 @@ function ProjectTable({ postData, percentageData }) {
   return (
     <>
       <div>
-        <h2>Post List</h2>
+        <h2>Post List With Project Name</h2>
       </div>
       <Table columns={listColumn} dataSource={postData} />
       <div>

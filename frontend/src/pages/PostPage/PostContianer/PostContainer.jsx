@@ -27,7 +27,6 @@ function PostContainer() {
     city: "",
     state: "",
     country: "",
-    projectName: "",
   });
 
   //Handing Input Changes
@@ -56,8 +55,8 @@ function PostContainer() {
       ...((postData.hasMultimedia === 0 || postData.hasMultimedia === 1) && {
         has_multimedia: postData.hasMultimedia,
       }),
-      ...(postData.likesNum && { likes_num: Number(postData.likesNum) }),
-      ...(postData.dislikeNum && { dislike_num: Number(postData.dislikeNum) }),
+      ...(postData.likesNum && { likes_num: postData.likesNum }),
+      ...(postData.dislikeNum && { dislike_num: postData.dislikeNum }),
       ...(postData.city && { city: postData.city }),
       ...(postData.state && { state: postData.state }),
       ...(postData.country && { country: postData.country }),
@@ -74,7 +73,7 @@ function PostContainer() {
       .then((resp) => {
         if (resp.success) {
           api.success({
-            message: "Successfully Added User To Database",
+            message: "Successfully Added Post To Database",
           });
         } else {
           api.error({
@@ -243,16 +242,6 @@ function PostContainer() {
                 name="country"
                 onChange={handleChangeInput}
                 value={postData.country}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>Project Name:</label>
-              <Input
-                name="projectName"
-                onChange={handleChangeInput}
-                value={postData.projectName}
               />
             </Flex>
           </Col>
