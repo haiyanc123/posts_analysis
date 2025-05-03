@@ -25,6 +25,11 @@ def create_repost(data):
         post_time = datetime.strptime(post_time_str, "%Y-%m-%d %H:%M:%S")
     except ValueError:
         raise BusinessException("Invalid post_time format. Expected 'YYYY-MM-DD HH:MM:SS'")
+
+
+    if data["repo_time"]< post_time:
+        raise BusinessException("Repost time cannot be before the original post time.")
+
     data["post_username"] = post_username
     data["post_social_media"] = post_social_media
     data["post_time"] = post_time
