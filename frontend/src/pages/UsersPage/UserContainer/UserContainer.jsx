@@ -37,14 +37,6 @@ function UserContainer() {
     }));
   };
 
-  // const handleChangeAge = (value) => {
-
-  //   setUserData((prevState) => ({
-  //     ...prevState,
-  //     age: value,
-  //   }));
-  // };
-
   const handleChangeGender = (value) => {
     setUserData((prevState) => ({
       ...prevState,
