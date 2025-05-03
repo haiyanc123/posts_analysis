@@ -12,7 +12,7 @@ from utils.error_handlers import register_error_handlers
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 swagger = Swagger(app=app)
 
 # Register blueprints
