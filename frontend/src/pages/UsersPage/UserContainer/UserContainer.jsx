@@ -23,7 +23,7 @@ function UserContainer() {
     lastName: "",
     birthCountry: "",
     residencyCountry: "",
-    age: "",
+    age: null,
     gender: null,
   });
 
@@ -37,12 +37,13 @@ function UserContainer() {
     }));
   };
 
-  const handleChangeAge = (value) => {
-    setUserData((prevState) => ({
-      ...prevState,
-      age: value,
-    }));
-  };
+  // const handleChangeAge = (value) => {
+
+  //   setUserData((prevState) => ({
+  //     ...prevState,
+  //     age: value,
+  //   }));
+  // };
 
   const handleChangeGender = (value) => {
     setUserData((prevState) => ({
@@ -58,26 +59,34 @@ function UserContainer() {
   };
 
   const handleEnterUserData = () => {
-    const payload = createPayload(userData);
-    fetch("http://127.0.0.1:5000/user/", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(payload),
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        if (resp.success) {
-          api.success({
-            message: "Successfully Added User To Database",
-          });
-        } else {
-          api.error({
-            message: resp.error,
-          });
-        }
-      });
+    try {
+      Number(userData.age) === NaN;
+      if (Number(userData.age) === NaN) {
+        throw "Invalid Age Input";
+      }
+      const payload = createPayload(userData);
+      fetch("http://127.0.0.1:5000/user/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(payload),
+      })
+        .then((resp) => resp.json())
+        .then((resp) => {
+          if (resp.success) {
+            api.success({
+              message: "Successfully Added User To Database",
+            });
+          } else {
+            api.error({
+              message: resp.error,
+            });
+          }
+        });
+    } catch (e) {
+      console.log("Hello", e);
+    }
   };
 
   return (
@@ -187,9 +196,9 @@ function UserContainer() {
           <Col>
             <Flex align="center">
               <label>Age:</label>
-              <InputNumber
+              <Input
                 name="age"
-                onChange={handleChangeAge}
+                onChange={handleChangeInput}
                 value={userData.age}
               />
             </Flex>

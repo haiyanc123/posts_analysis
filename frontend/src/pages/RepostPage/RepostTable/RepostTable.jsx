@@ -17,7 +17,7 @@ const listColumn = [
   {
     title: "Post Social Media",
     key: "post_socialmedia",
-    dataIndex: "post_socialmedia",
+    dataIndex: "post_social_media",
   },
   {
     title: "Repost Time",

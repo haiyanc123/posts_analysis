@@ -17,9 +17,20 @@ const columns = [
     title: "Is Verified",
     key: "is_verified",
     dataIndex: "is_verified",
-    render: (_, projectName) => (
-      <span>{projectName.is_verified === 1 ? "Y" : "N"}</span>
-    ),
+    render: (_, projectName) => {
+      let verifiedText = "";
+      switch (projectName.is_verified) {
+        case 0:
+          verifiedText = "N";
+          break;
+        case 1:
+          verifiedText = "Y";
+          break;
+        default:
+      }
+
+      return <span>{verifiedText}</span>;
+    },
   },
   {
     title: "First Name",
@@ -59,8 +70,10 @@ const columns = [
         case 1:
           gender = "Female";
           break;
-        default:
+        case 2:
           gender = "Other";
+          break;
+        default:
       }
 
       return <span>{gender}</span>;

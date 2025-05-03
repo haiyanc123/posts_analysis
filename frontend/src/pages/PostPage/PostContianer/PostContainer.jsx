@@ -74,7 +74,7 @@ function PostContainer() {
       .then((resp) => {
         if (resp.success) {
           api.success({
-            message: "Successfully Added User To Database",
+            message: "Successfully Added Post To Database",
           });
         } else {
           api.error({

@@ -44,10 +44,14 @@ function QueryPost() {
       posterFirstName: queryData.posterFirstName,
       posterLastName: queryData.posterLastName,
       fromDate: queryData.fromDate
-        ? `${queryData.fromDate} ${queryData.fromDateTime}`
+        ? `${queryData.fromDate} ${
+            queryData.fromDateTime ? queryData.fromDateTime : "00:00:00"
+          }`
         : "",
       toDate: queryData.toDate
-        ? `${queryData.toDate} ${queryData.toDateTime}`
+        ? `${queryData.toDate} ${
+            queryData.toDateTime ? queryData.toDateTime : "23:59:59"
+          }`
         : "",
     };
 

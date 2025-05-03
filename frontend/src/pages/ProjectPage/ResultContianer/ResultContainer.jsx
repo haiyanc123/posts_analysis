@@ -73,7 +73,7 @@ function ResultContainer() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        if (resp.ok) {
+        if (resp.success) {
           api.success({
             message: "Successfully Added Result To Database",
           });

@@ -19,6 +19,24 @@ export const createPayload = (data) => {
         [payloadMapper[key]]: data[key],
       };
     }
+    if (key === "age" && data[key] !== null && data[key] !== undefined) {
+      payload = {
+        ...payload,
+        age: Number(data[key]),
+      };
+    }
+    if (key === "isVerified" && data[key] !== null) {
+      payload = {
+        ...payload,
+        is_verified: data[key],
+      };
+    }
+    if (key === "gender" && data[key] !== null) {
+      payload = {
+        ...payload,
+        gender: data[key],
+      };
+    }
   });
 
   return payload;
