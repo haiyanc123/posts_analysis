@@ -12,17 +12,17 @@ from collections import defaultdict
 
 def create_result(data):
     proj_name = data['proj_name']
-    post_username=data["post_username"]
+    post_username = data["post_username"]
     post_social_media = data["post_social_media"]
     post_time = data["post_time"]
-    field_name=data['field_name']
+    field_name = data['field_name']
     # check if project exist
     project = project_service.find_by_pk(proj_name)
     if not project:
         raise BusinessException("project not exists")
 
     # check if post exist:
-    post=post_service.get_by_pk(post_username,post_social_media,post_time)
+    post = post_service.get_by_pk(post_username,post_social_media,post_time)
     if not post:
         raise BusinessException("post not exists")
 
@@ -38,7 +38,7 @@ def create_result(data):
 def qry_results(proj_name):
     rows = result_dao.qry_results(proj_name)
 
-    coverage_rows=result_dao.qry_coverage(proj_name)
+    coverage_rows = result_dao.qry_coverage(proj_name)
     field_coverage = cal_field_coverage(coverage_rows)
     res=group_result_rows(rows,field_coverage)
     return res
@@ -46,7 +46,7 @@ def qry_results(proj_name):
 
 
 def find_one(proj_name,post_username,post_social_media,post_time,field_name):
-    row=result_dao.get_by_pk(proj_name,post_username,post_social_media,post_time,field_name)
+    row = result_dao.get_by_pk(proj_name,post_username,post_social_media,post_time,field_name)
     return map_row_to_object(Result,row)
 
 
