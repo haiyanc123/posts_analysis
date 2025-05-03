@@ -36,16 +36,16 @@ def create_repost(data):
 
     repo_username = data["repo_username"]
     repo_social_media = data['repo_social_media']
-    user=user_service.find_user_by_pk(repo_username,repo_social_media)
+    user = user_service.find_user_by_pk(repo_username,repo_social_media)
     if not user:
         raise BusinessException("reposter not exists")
 
-    post=post_service.get_by_pk(post_username,post_social_media,post_time)
+    post = post_service.get_by_pk(post_username,post_social_media,post_time)
     if not post:
         raise BusinessException("post not exists")
 
     try:
-        flag=repost_dao.insert_repost(data)
+        flag = repost_dao.insert_repost(data)
     except IntegrityError as e:
         if e.errno == 1062:
             raise BusinessException("Duplicate entry: repost already exists")
