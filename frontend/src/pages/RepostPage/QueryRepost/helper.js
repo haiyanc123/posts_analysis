@@ -1,6 +1,6 @@
 const userDataMapper = {
-  postUserName: "username",
-  postSocialMedia: "social_media",
+  postUserName: "post_username",
+  postSocialMedia: "post_social_media",
 };
 
 export const createQueryUrl = (userData) => {
