@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from mysql.connector import IntegrityError
+from mysql.connector import IntegrityError, DataError
 
 from dao import post_dao
 from models.post import Post
@@ -27,6 +27,11 @@ def create_post(data):
     except IntegrityError as e:
         if e.errno == 1062:  # 1062 = duplicate entry
             raise BusinessException("a user cannot post more than one post in one media at the same time")
+        else:
+            raise BusinessException()
+    except DataError as dataerro:
+        if dataerro.errno == 1264:
+            raise BusinessException("number is out of range")
         else:
             raise BusinessException()
     return flag
