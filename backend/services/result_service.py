@@ -12,12 +12,10 @@ from collections import defaultdict
 
 def create_result(data):
     proj_name = data['proj_name']
-<<<<<<< HEAD
     post_username = data["post_username"]
     post_social_media = data["post_social_media"]
     post_time = data["post_time"]
     field_name = data['field_name']
-=======
     post=data["post"]
     parts = post.split(" & ")
     if len(parts) >= 3:
@@ -31,7 +29,6 @@ def create_result(data):
         raise BusinessException("Invalid post_time format. Expected 'YYYY-MM-DD HH:MM:SS'")
 
     field_name=data['field_name']
->>>>>>> origin/dev
     # check if project exist
     project = project_service.find_by_pk(proj_name)
     if not project:
