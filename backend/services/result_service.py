@@ -12,10 +12,6 @@ from collections import defaultdict
 
 def create_result(data):
     proj_name = data['proj_name']
-    # post_username = data["post_username"]
-    # post_social_media = data["post_social_media"]
-    # post_time = data["post_time"]
-    # field_name = data['field_name']
     post=data["post"]
     parts = post.split(" & ")
     if len(parts) >= 3:
