@@ -33,8 +33,8 @@ function ProjectContainer() {
   const handleSubmitData = () => {
     let payload = {
       proj_name: projectData.projectName,
-      institute: projectData.manager,
-      manager: projectData.institute,
+      institute: projectData.institute,
+      manager: projectData.manager,
       start_date: projectData.start_date,
       end_date: projectData.end_date,
     };
