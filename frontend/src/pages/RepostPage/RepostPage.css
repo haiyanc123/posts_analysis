@@ -1,0 +1,27 @@
+.repost-page-main-div {
+  margin-left: 5px;
+}
+
+.repost-container-heading {
+  margin-left: 25px;
+}
+
+.repost-container-heading-para {
+  font-size: 20px;
+}
+
+.query-repost-heading-para {
+  font-size: 20px;
+}
+
+.repost-container-content-div {
+  display: inline-block;
+}
+
+.query-repost-required-star {
+  color: red;
+}
+
+.repost-container-required-star {
+  color: red;
+}

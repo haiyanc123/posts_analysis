@@ -1,0 +1,27 @@
+.project-page-main-div {
+  margin-left: 5px;
+}
+
+.project-container-heading {
+  margin-left: 25px;
+}
+
+.post-container-heading-para {
+  font-size: 20px;
+}
+
+.post-container-content-div {
+  display: inline-block;
+}
+
+.result-container-required-star {
+  color: red;
+}
+
+.project-container-required-star {
+  color: red;
+}
+
+.query-project-required-star {
+  color: red;
+}

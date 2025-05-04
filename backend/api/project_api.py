@@ -1,5 +1,10 @@
 from flask import Blueprint, jsonify, request
 
+from schemas.project_schema import ProjectCreateSchema
+from services import project_service
+from utils.custom_exceptions import BusinessException, BadRequestException
+from utils.response_util import success_response
+from utils.serialize_util import serialize
 
 project_bp = Blueprint('project', __name__)
 
@@ -12,8 +17,11 @@ def list_posts():
       200:
         description: A list of projects
     """
-    # users = user_service.get_all_users()
-    # return jsonify(users)
+    proj_name=request.args.get("proj_name")
+    institute=request.args.get("institute")
+    results=project_service.qry_projects(proj_name,institute)
+    return success_response(data=serialize(results))
+
 
 @project_bp.route('/', methods=['POST'])
 def create_project():
@@ -41,10 +49,9 @@ def create_project():
       201:
         description: post created
     """
-    data = request.json
-    # user = User(**data)
-    # user_service.create_user(user)
-    return jsonify({'message': 'post created'}), 201
+    data=ProjectCreateSchema().load(request.json)
+    project_service.create_project(data)
+    return success_response()
 
 @project_bp.route('/detail', methods=['GET'])
 def find_project_detail():
@@ -63,3 +70,7 @@ def find_project_detail():
         description: project not found
     """
     proj_name = request.args.get('proj_name')
+    if not proj_name:
+        raise BadRequestException(message="proj_name is not allowed empty")
+    project=project_service.find_by_pk(proj_name)
+    return success_response(data=project)

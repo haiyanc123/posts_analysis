@@ -1,18 +1,16 @@
+from datetime import datetime
+
 from flask import Blueprint, jsonify, request
+from models.post import Post
+from services import post_service
+from schemas.post_schema import PostCreateSchema,PostQuerySchema
+from utils.custom_exceptions import BusinessException
+from utils.response_util import success_response, error_response
+from utils.serialize_util import serialize
 
 post_bp = Blueprint('post', __name__)
 
-@post_bp.route('/', methods=['GET'])
-def list_posts():
-    """
-    Get all posts
-    ---
-    responses:
-      200:
-        description: A list of posts
-    """
-    # users = user_service.get_all_users()
-    # return jsonify(users)
+
 
 @post_bp.route('/', methods=['POST'])
 def create_post():
@@ -26,17 +24,15 @@ def create_post():
         schema:
           type: object
           properties:
-            post_id:
-              type: integer
-            username:
+            post_username:
               type: string
-            social_media:
+            post_social_media:
               type: string
             text:
               type: string
             has_multimedia:
               type: integer
-            time:
+            post_time:
               type: string
             likes_num:
               type: integer
@@ -52,36 +48,42 @@ def create_post():
       201:
         description: post created
     """
-    data = request.json
-    # user = User(**data)
-    # user_service.create_user(user)
-    return jsonify({'message': 'post created'}), 201
+    data=PostCreateSchema().load(request.json)
+    post_service.create_post(data)
+    return success_response()
 
-@post_bp.route('/detail', methods=['GET'])
-def find_post_detail():
-    """
-    Get all users or find user by username and social_media
-    ---
-    parameters:
-      - name: post_id
-        in: query
-        type: integer
-        required: true
-    responses:
-      200:
-        description: a single user
-      404:
-        description: User not found
-    """
-    post_id_ = request.args.get('post_id')
+# @post_bp.route('/detail', methods=['GET'])
+# def find_post_detail():
+#     """
+#     Get all users or find user by username and social_media
+#     ---
+#     parameters:
+#       - name: post_id
+#         in: query
+#         type: integer
+#         required: true
+#     responses:
+#       200:
+#         description: a single user
+#       404:
+#         description: User not found
+#     """
+#     post_id_ = request.args.get('post_id')
+#     if not post_id_:
+#         return error_response(message="invalid request")
+#     post=post_service.find_user_by_pk(post_id_)
+#     if post:
+#         return success_response(data=serialize(post))
+#     else:
+#         return error_response(message="post not exists")
 
-@post_bp.route('list', methods=['GET'])
-def qry_list_by_social_media():
+@post_bp.route('/', methods=['GET'])
+def qry_list():
     """
     Find posts of a certain social media
     ---
     parameters:
-      - name: social_media
+      - name: post_social_media
         in: query
         type: string
         required: false
@@ -93,7 +95,7 @@ def qry_list_by_social_media():
         in: query
         type: string
         required: false
-      - name: username
+      - name: post_username
         in: query
         type: string
         required: false
@@ -109,4 +111,38 @@ def qry_list_by_social_media():
       200:
         description: A list of posts
     """
+    post_username = request.args.get('post_username')
+    post_social_media = request.args.get('post_social_media')
+    start_time_str = request.args.get('start_time')
+    end_time_str = request.args.get('end_time')
+    first_name = request.args.get('first_name')
+    last_name = request.args.get('last_name')
+    try:
+        start_time = (
+            datetime.strptime(start_time_str, "%Y-%m-%d %H:%M:%S") if start_time_str else None
+        )
+    except ValueError:
+        raise BusinessException("start_time format is not allowed")
+    try:
+        end_time = (
+            datetime.strptime(end_time_str, "%Y-%m-%d %H:%M:%S") if end_time_str else None
+        )
+    except ValueError:
+        raise BusinessException("end_time format is not allowed")
+    if start_time and end_time and start_time > end_time:
+        raise BusinessException("end_time must be after start_time")
 
+    posts=post_service.qry_posts(post_username,post_social_media,start_time,end_time,first_name,last_name)
+    return success_response(data=serialize(posts))
+@post_bp.route('/dropdown', methods=['GET'])
+def qry_post_dropdown():
+    """
+    Find dropdown for posts
+    ---
+    responses:
+      200:
+        description: A list of posts
+    """
+
+    res=post_service.qry_dropdown()
+    return success_response(data=res)
