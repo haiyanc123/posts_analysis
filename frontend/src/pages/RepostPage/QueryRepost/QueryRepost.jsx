@@ -3,6 +3,8 @@ import { Button, Col, DatePicker, Flex, Input, Row } from "antd";
 
 import RepostTable from "../RepostTable/RepostTable";
 
+import { createQueryUrl } from "./helper";
+
 function QueryRepost() {
   //Creating State Data
   const [queryData, setQueryData] = useState({
@@ -24,19 +26,19 @@ function QueryRepost() {
   };
 
   const handleSubmitButton = () => {
-    fetch(
-      `http://127.0.0.1:5000/repost/?post_social_media=${queryData.postSocialMedia}&post_username=${queryData.postUserName}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-      }
-    )
+    const url = createQueryUrl(queryData);
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp.success) {
           setData(resp.data);
+        } else {
+          setData(null);
         }
       });
   };
@@ -55,12 +57,7 @@ function QueryRepost() {
         <Row gutter={[24, 24]}>
           <Col>
             <Flex align="center">
-              <label>
-                Post User Name:
-                <span className={`${QueryRepost.displayName}-required-star`}>
-                  *
-                </span>
-              </label>
+              <label>Post User Name:</label>
               <Input
                 name="postUserName"
                 onChange={handleChangeInput}
@@ -70,12 +67,7 @@ function QueryRepost() {
           </Col>
           <Col>
             <Flex align="center">
-              <label>
-                Post Social Media:
-                <span className={`${QueryRepost.displayName}-required-star`}>
-                  *
-                </span>
-              </label>
+              <label>Post Social Media:</label>
               <Input
                 name="postSocialMedia"
                 onChange={handleChangeInput}
@@ -85,12 +77,7 @@ function QueryRepost() {
           </Col>
         </Row>
         <Flex justify="flex-end">
-          <Button
-            color="cyan"
-            variant="solid"
-            onClick={handleSubmitButton}
-            disabled={!(queryData.postSocialMedia && queryData.postUserName)}
-          >
+          <Button color="cyan" variant="solid" onClick={handleSubmitButton}>
             Confirm
           </Button>
         </Flex>
