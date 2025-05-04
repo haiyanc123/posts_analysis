@@ -60,7 +60,7 @@ const columns = [
     key: "likes_num",
     dataIndex: "likes_num",
     render: (_, postData) => (
-      <span>{postData.likes_num ? postData.likes_num : "-"}</span>
+      <span>{postData.likes_num !== null ? postData.likes_num : "-"}</span>
     ),
   },
   {
@@ -68,7 +68,7 @@ const columns = [
     key: "dislike_num",
     dataIndex: "dislike_num",
     render: (_, postData) => (
-      <span>{postData.dislike_num ? postData.dislike_num : "-"}</span>
+      <span>{postData.dislike_num !== null ? postData.dislike_num : "-"}</span>
     ),
   },
   {

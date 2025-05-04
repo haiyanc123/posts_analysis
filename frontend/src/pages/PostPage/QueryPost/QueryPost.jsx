@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { Button, Col, DatePicker, Flex, Input, Row, TimePicker } from "antd";
+import { Button, Col, DatePicker, Flex, Input, Row } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import PostTable from "../PostTable/PostTable";
 import { createQueryUrl } from "./helper";
 
+import { getDate } from "../../../helper/getDate";
+
 function QueryPost() {
+  dayjs.extend(customParseFormat);
+  const dateFormat = "YYYY-MM-DD";
+
   //Creating State Data
   const [queryData, setQueryData] = useState({
     socialMedia: "",
@@ -12,12 +19,11 @@ function QueryPost() {
     posterFirstName: "",
     posterLastName: "",
     fromDate: "",
-    fromDateTime: "",
     toDate: "",
-    toDateTime: "",
   });
 
   const [data, setData] = useState(null);
+  const { RangePicker } = DatePicker;
 
   //Handing Input Changes
   const handleChangeInput = (e) => {
@@ -43,16 +49,8 @@ function QueryPost() {
       userName: queryData.userName,
       posterFirstName: queryData.posterFirstName,
       posterLastName: queryData.posterLastName,
-      fromDate: queryData.fromDate
-        ? `${queryData.fromDate} ${
-            queryData.fromDateTime ? queryData.fromDateTime : "00:00:00"
-          }`
-        : "",
-      toDate: queryData.toDate
-        ? `${queryData.toDate} ${
-            queryData.toDateTime ? queryData.toDateTime : "23:59:59"
-          }`
-        : "",
+      fromDate: queryData.fromDate,
+      toDate: queryData.toDate,
     };
 
     const url = createQueryUrl(payload);
@@ -130,19 +128,21 @@ function QueryPost() {
             <Flex align="center">
               <label>From Date:</label>
               <DatePicker
-                name="fromDate"
-                onChange={(date, value) => handleChangeData("fromDate", value)}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>From Date Time:</label>
-              <TimePicker
-                name="fromDateTime"
-                onChange={(date, value) =>
-                  handleChangeData("fromDateTime", value)
-                }
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm:ss"
+                onChange={(value, dateString) => {
+                  setQueryData((prevState) => ({
+                    ...prevState,
+                    fromDate: dateString,
+                  }));
+                }}
+                onOk={(value, dateString) => {
+                  setQueryData((prevState) => ({
+                    ...prevState,
+                    fromDate: dateString,
+                  }));
+                }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>
@@ -150,19 +150,21 @@ function QueryPost() {
             <Flex align="center">
               <label>To Date:</label>
               <DatePicker
-                name="toDate"
-                onChange={(date, value) => handleChangeData("toDate", value)}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>To Date Time:</label>
-              <TimePicker
-                name="toDateTime"
-                onChange={(date, value) =>
-                  handleChangeData("toDateTime", value)
-                }
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm:ss"
+                onChange={(value, dateString) => {
+                  setQueryData((prevState) => ({
+                    ...prevState,
+                    toDate: dateString,
+                  }));
+                }}
+                onOk={(value, dateString) => {
+                  setQueryData((prevState) => ({
+                    ...prevState,
+                    toDate: dateString,
+                  }));
+                }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>

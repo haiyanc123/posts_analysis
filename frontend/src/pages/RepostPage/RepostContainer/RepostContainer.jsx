@@ -7,16 +7,21 @@ import {
   Row,
   Col,
   Flex,
-  TimePicker,
   Select,
 } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+import { getDate } from "../../../helper/getDate";
 
 function RepostContainer() {
+  dayjs.extend(customParseFormat);
+  const dateFormat = "YYYY-MM-DD";
+
   const [api, contextHolder] = notification.useNotification();
   const [formData, setFormData] = useState({
     post: "",
     repostDate: "",
-    repostTime: "",
     repostUserName: "",
     repostSocialMedia: "",
   });
@@ -56,7 +61,7 @@ function RepostContainer() {
       post: formData.post,
       repo_social_media: formData.repostSocialMedia,
       repo_username: formData.repostUserName,
-      repo_time: `${formData.repostDate} ${formData.repostTime}`,
+      repo_time: formData.repostDate,
     };
     fetch("http://127.0.0.1:5000/repost/", {
       headers: {
@@ -80,12 +85,9 @@ function RepostContainer() {
   };
 
   const handleDisabledButton = () => {
-    const { post, repostDate, repostTime, repostUserName, repostSocialMedia } =
-      formData;
+    const { post, repostDate, repostUserName, repostSocialMedia } = formData;
 
-    return (
-      post && repostDate && repostTime && repostUserName && repostSocialMedia
-    );
+    return post && repostDate && repostUserName && repostSocialMedia;
   };
 
   return (
@@ -127,6 +129,8 @@ function RepostContainer() {
                 </span>
               </label>
               <DatePicker
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm:ss"
                 name="repostDate"
                 onChange={(e, dateString) => {
                   setFormData((prevState) => ({
@@ -134,27 +138,13 @@ function RepostContainer() {
                     repostDate: dateString,
                   }));
                 }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Repost Time:
-                <span
-                  className={`${RepostContainer.displayName}-required-star`}
-                >
-                  *
-                </span>
-              </label>
-              <TimePicker
-                name="repostTime"
-                onChange={(e, dateString) => {
+                onOk={(e, dateString) => {
                   setFormData((prevState) => ({
                     ...prevState,
-                    repostTime: dateString,
+                    repostDate: dateString,
                   }));
                 }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>
@@ -202,7 +192,7 @@ function RepostContainer() {
             disabled={!handleDisabledButton()}
             onClick={handleSubmit}
           >
-            Confirmed
+            Confirm
           </Button>
         </Flex>
       </div>
