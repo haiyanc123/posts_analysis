@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, DatePicker, Flex, Input, Row } from "antd";
+import { Button, Col, DatePicker, Flex, Input, notification, Row } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
@@ -9,6 +9,7 @@ import { createQueryUrl } from "./helper";
 import { getDate } from "../../../helper/getDate";
 
 function QueryPost() {
+  const [api, contextHolder] = notification.useNotification();
   dayjs.extend(customParseFormat);
   const dateFormat = "YYYY-MM-DD";
 
@@ -62,10 +63,17 @@ function QueryPost() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        if (resp.data.length > 0) {
-          setData(resp.data);
+        if (resp.success) {
+          if (resp.data.length > 0) {
+            setData(resp.data);
+          } else {
+            setData(null);
+          }
         } else {
           setData(null);
+          api.error({
+            message: resp.error,
+          });
         }
       });
   };
@@ -77,6 +85,7 @@ function QueryPost() {
   //Rendering UI element
   return (
     <>
+      {contextHolder}
       <div>
         <p>
           <b className={`${QueryPost.displayName}-heading-para`}>Query Post</b>
