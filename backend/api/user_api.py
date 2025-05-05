@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from services import user_service
-from schemas.user_schema import  CreateUserSchema
+from schemas.user_schema import CreateUserSchema, UpdateUserSchema
 from utils.response_util import success_response, error_response
 
 
@@ -96,3 +96,29 @@ def find_one():
         return success_response(data=user)
     else:
         return error_response(message='User not found')
+
+@user_bp.route('/update', methods=['POST'])
+def update():
+    """
+    change verified status
+    ---
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+            social_media:
+              type: string
+            is_verified:
+              type: boolean
+    responses:
+      200:
+        description:
+    """
+    data = UpdateUserSchema().load(request.json)
+    user_service.update_status(data)
+    return success_response()
