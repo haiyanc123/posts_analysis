@@ -10,6 +10,14 @@
   font-size: 20px;
 }
 
+.update-user-heading-para {
+  font-size: 20px;
+}
+
+.update-user-required-star {
+  color: red;
+}
+
 .user-container-content-div {
   display: inline-block;
 }
