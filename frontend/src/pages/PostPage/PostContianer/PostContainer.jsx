@@ -8,10 +8,16 @@ import {
   notification,
   Radio,
   Row,
-  TimePicker,
 } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+import { getDate } from "../../../helper/getDate";
 
 function PostContainer() {
+  dayjs.extend(customParseFormat);
+  const dateFormat = "YYYY-MM-DD";
+
   const [api, contextHolder] = notification.useNotification();
 
   //Creating State Data
@@ -21,7 +27,6 @@ function PostContainer() {
     text: "",
     hasMultimedia: null,
     date: "",
-    time: "",
     likesNum: "",
     dislikeNum: "",
     city: "",
@@ -41,16 +46,16 @@ function PostContainer() {
   };
 
   const handleDisabledButton = () => {
-    const { userName, socialMedia, time, text } = postData;
+    const { userName, socialMedia, date, text } = postData;
 
-    return userName && socialMedia && time && text;
+    return userName && socialMedia && date && text;
   };
 
   const handleSubmitButton = () => {
     let payload = {
       post_username: postData.userName,
       post_social_media: postData.socialMedia,
-      post_time: `${postData.date} ${postData.time}`,
+      post_time: postData.date,
       text: postData.text,
       ...((postData.hasMultimedia === 0 || postData.hasMultimedia === 1) && {
         has_multimedia: postData.hasMultimedia,
@@ -166,6 +171,8 @@ function PostContainer() {
                 </span>
               </label>
               <DatePicker
+                showTime={{ format: "HH:mm:ss" }}
+                format="YYYY-MM-DD HH:mm:ss"
                 name="date"
                 onChange={(e, dateString) => {
                   setPostData((prevState) => ({
@@ -173,25 +180,13 @@ function PostContainer() {
                     date: dateString,
                   }));
                 }}
-              />
-            </Flex>
-          </Col>
-          <Col>
-            <Flex align="center">
-              <label>
-                Time:
-                <span className={`${PostContainer.displayName}-required-star`}>
-                  *
-                </span>
-              </label>
-              <TimePicker
-                name="time"
-                onChange={(e, timeString) => {
+                onOk={(value, dateString) => {
                   setPostData((prevState) => ({
                     ...prevState,
-                    time: timeString,
+                    fromDate: dateString,
                   }));
                 }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>

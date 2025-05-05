@@ -74,7 +74,7 @@ def group_full_posts_with_experiments(rows):
                 "experiments": []
             }
 
-        if row.get("proj_name"):
+        if row.get("proj_name") and row["proj_name"] not in grouped[post_key]["experiments"]:
             grouped[post_key]["experiments"].append(row["proj_name"])
 
     return list(grouped.values())

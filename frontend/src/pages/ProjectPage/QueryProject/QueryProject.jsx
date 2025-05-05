@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Button, Col, Flex, Input, Row } from "antd";
+import { Button, Col, Flex, Input, notification, Row } from "antd";
 
 import ProjectTable from "../ProjectTable/ProjectTable";
 
 function QueryProject() {
+  const [api, contextHolder] = notification.useNotification();
   const [projectName, setProjectName] = useState("");
   const [postData, setPostData] = useState(null);
   const [percentageData, setPercentageData] = useState(null);
@@ -18,18 +19,27 @@ function QueryProject() {
     })
       .then((resp) => resp.json())
       .then((resp) => {
-        if (resp.data.length > 0) {
-          setPostData(resp.data[0].posts);
-          setPercentageData(resp.data[0].coverage);
+        if (resp.success) {
+          if (resp.data.length > 0) {
+            setPostData(resp.data[0].posts);
+            setPercentageData(resp.data[0].coverage);
+          } else {
+            setPostData(null);
+            setPercentageData(null);
+          }
         } else {
           setPostData(null);
           setPercentageData(null);
+          api.error({
+            message: resp.error,
+          });
         }
       });
   };
 
   return (
     <>
+      {contextHolder}
       <div>
         <p>
           <b>Query Project And Result</b>
