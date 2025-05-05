@@ -9,8 +9,6 @@ function UpdateUser() {
     isVerified: null,
   });
 
-  const [queryUserData, setQueryUserData] = useState(null);
-
   const handleChangeInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -38,12 +36,10 @@ function UpdateUser() {
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp.success) {
-          setQueryUserData(resp.data);
           api.success({
             message: "Updated User Verification Status",
           });
         } else {
-          setQueryUserData(null);
           api.error({
             message: resp.error,
           });
