@@ -12,7 +12,6 @@ from utils.error_handlers import register_error_handlers
 
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 swagger = Swagger(app=app)
 
 # Register blueprints
@@ -22,6 +21,7 @@ app.register_blueprint(project_bp, url_prefix='/project')
 app.register_blueprint(result_bp, url_prefix='/result')
 app.register_blueprint(repost_bp, url_prefix='/repost')
 
+CORS(app)
 
 register_error_handlers(app)
 

@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Button, Col, DatePicker, Flex, Input, notification, Row } from "antd";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+import { getDate } from "../../../helper/getDate";
 
 function ProjectContainer() {
+  dayjs.extend(customParseFormat);
+  const dateFormat = "YYYY-MM-DD";
+
   //Creating State Data
   const [api, contextHolder] = notification.useNotification();
   const [projectData, setProjectData] = useState({
@@ -26,8 +33,8 @@ function ProjectContainer() {
   const handleSubmitData = () => {
     let payload = {
       proj_name: projectData.projectName,
-      institute: projectData.manager,
-      manager: projectData.institute,
+      institute: projectData.institute,
+      manager: projectData.manager,
       start_date: projectData.start_date,
       end_date: projectData.end_date,
     };
@@ -121,6 +128,7 @@ function ProjectContainer() {
                     start_date: dateString,
                   }));
                 }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>
@@ -142,6 +150,7 @@ function ProjectContainer() {
                     end_date: dateString,
                   }));
                 }}
+                maxDate={dayjs(getDate(), dateFormat)}
               />
             </Flex>
           </Col>

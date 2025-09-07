@@ -19,3 +19,8 @@ class UserQuerySchema(Schema):
     social_media = fields.String()
     first_name = fields.String()
     last_name = fields.String()
+
+class UpdateUserSchema(Schema):
+    username = fields.String(required=True, validate=[not_blank,validate.Length(min=1,max=40)])
+    social_media = fields.String(required=True, validate=[not_blank,validate.Length(min=1,max=255)])
+    is_verified = fields.Integer(validate=validate.OneOf([0, 1]))

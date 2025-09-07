@@ -3,6 +3,7 @@ import { Button, Col, Flex, Input, notification, Row } from "antd";
 
 import { createQueryUrl } from "./helper";
 import UserTable from "../UserTable/UserTable";
+import UpdateUser from "../UpdateUser/UpdateUser";
 
 function QueryUser() {
   const [api, contextHolder] = notification.useNotification();
@@ -81,6 +82,8 @@ function QueryUser() {
             Confirm
           </Button>
         </Flex>
+        <hr></hr>
+        <UpdateUser />
         <hr></hr>
         <UserTable data={queryUserData} />
       </div>

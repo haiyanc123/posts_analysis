@@ -76,7 +76,9 @@ const columns = [
     title: "Age",
     key: "age",
     dataIndex: "age",
-    render: (_, userData) => <span>{userData.age ? userData.age : "-"}</span>,
+    render: (_, userData) => (
+      <span>{userData.age !== null ? userData.age : "-"}</span>
+    ),
   },
   {
     title: "Gender",

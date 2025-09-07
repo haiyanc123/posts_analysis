@@ -38,3 +38,14 @@ def insert_user(data):
     )
     return execute_query(query, params, commit=True)
 
+def update_status(data):
+    query = """
+        update user set is_verified= %s where username= %s and social_media= %s
+    """
+    params = (
+        data.get("is_verified"),
+        data.get("username"),
+        data.get("social_media"),
+
+    )
+    return execute_query(query, params, commit=True)
